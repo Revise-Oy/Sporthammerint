@@ -1,0 +1,4 @@
+[submodule "sprintit/sprintit_accounting_official"]
+	path = sprintit/sprintit_accounting_official
+	url = git@bitbucket.org:sprintit/sprintit_accounting_official.git
+	branch = 14.0
