@@ -2,3 +2,7 @@
 	path = sprintit/sprintit_accounting_official
 	url = git@bitbucket.org:sprintit/sprintit_accounting_official.git
 	branch = 14.0
+[submodule "sprintit/revise_addons_13"]
+	path = sprintit/revise_addons_13
+	url = git@bitbucket.org:sprintit/revise_addons_13.git
+	branch = 14.0
