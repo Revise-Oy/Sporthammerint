@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_klaviyo_credential_details,klaviyo_credential_details,model_klaviyo_credential_details,account.group_account_manager,1,1,1,1
+access_klaviyo_list_details,klaviyo_klaviy_list_details,model_klaviyo_list_details,account.group_account_manager,1,1,1,1
+access_klaviyo_customer_details,klaviyo_klaviyo_customer_details,model_klaviyo_customer_details,account.group_account_manager,1,1,1,1

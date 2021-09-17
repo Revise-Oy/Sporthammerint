@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+        <record id="view_klaviyo_list_details" model="ir.ui.view">
+            <field name="name">klaviyo List Details</field>
+            <field name="model">klaviyo.list.details</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="klaviyo List Details">
+                    <field name="name"/>
+                    <field name="klaviyo_list_type"/>
+                    <field name="klaviyo_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_form_klaviyo_list_details" model="ir.ui.view">
+            <field name="name">klaviyo List Details</field>
+            <field name="model">klaviyo.list.details</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="klaviyo List Details">
+                    <header>
+                        <button string="Export Partner From Odoo To Klaviyo" name="export_partner_from_odoo_to_klaviyo"
+                                class="oe_highlight"
+                                type="object"/>
+                         <button string="Export List From Odoo To Klaviyo" name="export_list_from_odoo_to_klaviyo"
+                                class="oe_highlight"
+                                type="object" attrs="{'invisible': [('klaviyo_id', '!=', False)]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="klaviyo_list_type"/>
+                                <field name="klaviyo_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Customers">
+
+                                <field name="klavio_customer_ids" nolabel="1">
+                                    <tree>
+                                        <field name="partner_id" required="1"/>
+                                        <field name="exported_in_klaviyo"/>
+                                        <field name="klaviyo_referance" />
+                                        <field name="message" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_klaviyo_list_details" model="ir.actions.act_window">
+            <field name="name">klaviyo List Details</field>
+            <field name="res_model">klaviyo.list.details</field>
+            <field name='view_mode'>tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a klaviyo List Details.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="klaviyo List Details" id="menu_klaviyo_list_details"
+                  parent="klaviyo_integration" action="action_klaviyo_list_details"
+                  sequence="4"/>
+
+
+    </data>
+</odoo>
+
