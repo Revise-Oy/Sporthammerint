@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_machine_repair_form" model="ir.ui.view">
+            <field name="name">machine.repair.form</field>
+            <field name="model">machine.repair</field>
+            <field name="arch" type="xml">
+                <form string="Machine Repair">
+                    <header>
+                        <button name="action_create_machine_diagnosis" string="Create Machine Diagnosis" states="draft" type="object" class="oe_highlight" style="float:left;" groups="machine_repair_industry.group_machine_repair_service_manager,machine_repair_industry.group_machine_repair_directeur_commercial"/>
+                        <!--button name="%(action_machine_repair_assign_to_head_tech)d" string="Assign to Head Technician" states="draft" type="action" class="oe_highlight" style="float:left;"/-->
+                        <button name="action_print_receipt" string="Print Receipt" states="draft" type="object" style="float:left;"/>
+                        <button name="action_print_label" string="Print Label" states="draft" type="object" style="float:left;"/>
+                        <button name="action_done" string="Done" attrs="{'invisible': [('state','!=','invoiced')]}" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,diagnosis,quote,saleorder,workorder,invoiced,done"/>
+                    </header>
+                    <sheet string="Machine Repair">
+                            <div class="oe_button_box" name="button_box">
+                          <button type="object"
+                        name="button_view_workorder"
+                        class="oe_stat_button"
+                        icon="fa-wrench"
+                        attrs="{'invisible': [('workorder_count', '=', 0)]}" groups="base.group_user">
+                        <field name="workorder_count" widget="statinfo" string="Work Order"/>
+                    </button>
+                        
+                        
+              		<button type="object"
+                        name="button_view_diagnosis"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square"
+                        attrs="{'invisible': [('dig_count', '=', 0)]}" groups="base.group_user">
+                        <field name="dig_count" widget="statinfo" string="Diagnoses"/>
+                    </button>
+              
+              	<button type="object"
+                        name="button_view_quotation"
+                        class="oe_stat_button"
+                        icon="fa-usd"
+                        attrs="{'invisible': [('quotation_count', '=', 0)]}" groups="base.group_user">
+                        <field name="quotation_count" widget="statinfo" string="Quotations"/>
+                    </button>
+              
+           
+              	<button type="object"
+                        name="button_view_saleorder"
+                        class="oe_stat_button"
+                        icon="fa-usd"
+                        attrs="{'invisible': [('saleorder_count', '=', 0)]}" groups="base.group_user">
+                        <field name="saleorder_count" widget="statinfo" string="Sales Orders"/>
+                    </button>
+              
+           
+           
+              	<button type="object"
+                        name="button_view_invoice"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        attrs="{'invisible': [('inv_count', '=', 0)]}" groups="base.group_user">
+                        <field name="inv_count" widget="statinfo" string="Invoices"/>
+                    </button>
+</div>
+                        <div class="oe_title oe_left">
+                            <h1>
+                                <field name="sequence"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="priority" widget="priority" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="receipt_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="sale_order_id" invisible="True"/>
+                                <field name="workorder_id" invisible="True"/>
+                                <field name="diagnose_id" readonly="True" invisible="True"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="General">
+                                <group string="Client Info">
+                                    <group>
+                                        <field name="client_id" context="{'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="contact_name"/>
+                                    </group>
+                                    <group>
+                                        <field name="client_phone" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="client_mobile" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="client_email" widget="email" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="phone"/>
+                                    </group>
+                                </group>
+                                <separator string="Machine Info"/>
+                                <field name="machine_repair_line" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </page>
+                        </notebook>
+                        <!--separator string="Service Details"/>
+                        <field name="service_detail"/-->
+                        <separator string="Notes"/>
+                        <field name="description"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+<!--Machine Repair Tree View-->
+
+        <record id="view_machine_repair_tree" model="ir.ui.view">
+            <field name="name">machine.repair.tree</field>
+            <field name="model">machine.repair</field>
+            <field name="priority">4</field>
+            <field name="arch" type="xml">
+                <tree string="Machine Repair">
+                    <field name="sequence"/>
+                    <field name="name" string="Subject"/>
+                    <field name="client_id"/>
+                    <field name="phone"/>
+                    <field name="receipt_date"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_repair_order_filter" model="ir.ui.view">
+            <field name="name">machine.repair.list.select</field>
+            <field name="model">machine.repair</field>
+            <field name="arch" type="xml">
+                <search string="Search Repair Order">
+                    <field name="sequence"/>
+                    <field name="name" string="Repair Order" />
+                    <field name="client_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="serial_no"/>
+                    <field name="machine_id"/>
+                    <separator/>
+               </search>
+            </field>
+        </record>
+
+
+<!--Action-->
+        <record model="ir.actions.act_window" id="action_machine_repair_tree_view">
+            <field name="name">Repair Order</field>
+            <field name="res_model">machine.repair</field>
+            
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_repair_order_filter"/>
+            <field name="view_id" ref="view_machine_repair_tree"/>
+        </record>
+        
+<!--Menuitems-->        
+
+        <menuitem id="base.menu_base_machine_repair" groups="machine_repair_industry.group_machine_repair_service_manager,machine_repair_industry.group_machine_repair_technician" name="Machine Repair" sequence="50"/>
+        
+        <menuitem name="Machine Repair" parent="base.menu_base_machine_repair" id="menu_machine_repair" sequence="3"/>
+        
+        <menuitem name="Machine Repair" parent="menu_machine_repair" id="menu_machine_repair_submenu" sequence="3" groups="machine_repair_industry.group_machine_repair_service_manager,machine_repair_industry.group_machine_repair_technician,machine_repair_industry.group_machine_repair_directeur_commercial" action="action_machine_repair_tree_view"/>
+
+<!-- Machine Lines-->        
+
+        <record id="view_repair_machine_line_form" model="ir.ui.view">
+            <field name="name">machine.repair.line.form</field>
+            <field name="model">machine.repair.line</field>
+            <field name="arch" type="xml">
+                <form string="Machine Lines">
+                    <header>
+                        <button name="action_add_machine_diagnosis_result" string="Enter Results" groups="machine_repair_industry.group_machine_repair_head_technician,machine_repair_industry.group_machine_repair_directeur_commercial" type="object" class="oe_highlight" style="float:left;" attrs="{'invisible': ['|', ('diagnose_id', '=', False), ('state', 'in', ['done', 'draft'])]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,diagnosis,done"/>
+                    </header>
+                    <sheet>
+                        <group class="col-xs-12">
+                            <group class="col-xs-6">
+                                <field name="machine_id" domain="[('machine', '=', True)]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="machine_name"/>
+                                <field name="model_number"/>
+                            </group>
+                            <group class="col-xs-6">
+                                <field name="serial_no" context="{'product_id': machine_id}" domain="[('product_id', '=', machine_id)]" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('machine_id', '=', False), ('machine_name', '!=', False)]}"/>
+                                <field name="machine_serial" attrs="{'invisible': [('machine_id', '!=', False)], 'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="diagnose_id" invisible="True"/>
+                                <field name="workorder_id" invisible="True"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Service Details">
+                                <group>
+                                    <group>
+                                        <field name="guarantee" widget="radio" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name="guarantee_type" widget="radio" attrs="{'invisible': [('guarantee', '=', 'no')],'readonly': [('state', '!=', 'draft')]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="service_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </group>
+                                </group>
+                                <separator string="Service Details"/>
+                                <field name="service_detail" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </page>
+                            <page string="Diagnosis Report" attrs="{'invisible': ['|', ('diagnose_id', '=', False), ('state', '!=', 'done')]}">
+                                <group>
+                                    <!--group>
+                                        <field name="user_id" readonly="True"/>
+                                    </group-->
+                                    <group attrs="{'invisible': [('guarantee_type', '=', 'free')]}">
+                                        <field name="est_ser_hour" attrs="{'readonly': [('workorder_id', '!=', False)]}"/>
+                                        <field name="service_product_id" attrs="{'readonly': [('workorder_id', '!=', False)]}"/>
+                                        <field name="service_product_price" attrs="{'readonly': [('workorder_id', '!=', False)]}"/>
+                                    </group>
+                                </group>
+                                <separator string="Spare Parts"/>
+                                <field name="spare_part_ids" attrs="{'readonly': [('workorder_id', '!=', False)]}">
+                                    <tree string="Spare Parts" editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="default_code"/>
+                                        <field name="quantity"/>
+                                        <field name="price_unit"/>
+                                    </tree>
+                                </field>
+                                <separator string="Diagnostic Results"/>
+                                <field name="diagnostic_result" attrs="{'readonly': [('workorder_id', '!=', False)]}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_repair_machine_line_tree" model="ir.ui.view">
+            <field name="name">repair.machine.line.tree</field>
+            <field name="model">machine.repair.line</field>
+            <field name="priority">4</field>
+            <field name="arch" type="xml">
+                <tree string="Machine Lines">
+                    <field name="machine_id" context="{'machine_id': machine_id}"/>
+                    <field name="machine_name" invisible="context.get('machine_id', False)"/>
+                    <field name="model_number"/>
+                    <field name="serial_no" context="{'product_id': machine_id}" domain="[('product_id', '=', machine_id)]"/>
+                    <field name="guarantee" widget="radio"/>
+                    <field name="service_type"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_repair_machine_line_filter" model="ir.ui.view">
+            <field name="name">machine.repair.line.select</field>
+            <field name="model">machine.repair.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <field name="machine_repair_id"/>
+                    <field name="serial_no" />
+                    <field name="machine_id"/>
+                </search>
+            </field>
+        </record>
+
+        
+<!--MACHINE REPAIR ANALYSIS REPORTING-->
+        
+        <record id="machine_repair_analysis_tree_view" model="ir.ui.view">
+            <field name="name">machine.repair.analysis.tree</field>
+            <field name="model">machine.repair.analysis</field>
+            <field name="arch" type="xml">
+                <tree string="Machines" create="false" delete="false">
+                    <field name="sequence"/>
+                    <field name="client_id"/>
+                    <field name="receipt_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_machine_repair_analysis_search" model="ir.ui.view">
+            <field name="name">machine.repair.analysis.search</field>
+            <field name="model">machine.repair.analysis</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <search string="Search Client">
+                    <group string="Group by...">
+                        <filter icon="terp-accessories-archiver-minus" name="date" string="Date of Receipt" context="{'group_by' : 'receipt_date:day'}"/>
+                        <filter icon="terp-accessories-archiver-minus" name="status" string="Status" context="{'group_by' : 'state'}"/>
+                        <filter icon="terp-accessories-archiver-minus" name="client" string="Client" context="{'group_by' : 'client_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_machine_repair_analysis_graph">
+            <field name="name">machine.repair.analysis.graph</field>
+            <field name="model">machine.repair.analysis</field>
+            <field name="arch" type="xml">
+                <graph string="Machine Repair Analysis" type="pivot">
+                    <field name="client_id" type="row"/>
+                    <field name="receipt_date" interval="month" type="col"/>
+                    <!--field name="state" type="measure"/-->
+                </graph>
+            </field>
+        </record>
+        
+        <record id="machine_repair_analysis_action" model="ir.actions.act_window">
+            <field name="name">Machine Repair Analysis</field>
+            <field name="res_model">machine.repair.analysis</field>
+            
+            <field name="view_id" ref="machine_repair_analysis_tree_view"/>
+            <field name="context">{'group_by': ['client_id'], 'measures': ['id']}</field>
+            <field name="view_mode">tree,graph</field>
+        </record>
+
+
+        <menuitem id="menu_machine_repair_analysis" parent="base.menu_reporting_config" sequence="1" name="Machine Repair"/>
+        
+        <menuitem id="menu_machine_repair_analysis_submenu" action="machine_repair_analysis_action" parent="menu_machine_repair_analysis" sequence="1"/>
+
+
+        <record id="res_partner_view_buttons" model="ir.ui.view">
+            <field name="name">res.partner.view.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="20"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="button_view_repair" 
+                        icon="fa-truck">
+                        <field string="Repair Orders" name="repair_order_count" widget="statinfo"/>
+                    </button>     
+                </div>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	   <!-- Machine Repair page -->
+	   <template id="hide_garantee" inherit_id="website.assets_frontend">
+	        <xpath expr="script[last()]" position="after">
+	            <script type="text/javascript" src="/website_machine_repair_management/static/src/js/custom.js"></script>
+	        </xpath>
+	    </template>
+
+		<template id="machine_repair" name="Machine Repair">
+			<t t-call="website.layout">
+				<t t-set="additional_title">Machine Repair - Order</t>
+				<div id="wrap">
+					<div class="container oe_website_sale">
+						<h1>Machine Repair Order</h1>
+						<form t-attf-action="/machine/thankyou" method="post">
+							<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+							<div class="row">
+
+								<t t-if="request.params.get('detail_msg')">
+									<div class='alert alert-warning' role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+									<span class="float-left">Please Enter Details !</span>
+									</div>
+								</t>
+
+								<div class="col-md-12 oe_cart">
+									<div class="row">
+										<div class="col-lg-12">
+						                 	<div t-if="error_message" class="alert alert-danger" role="alert">
+						                      <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br /></t>
+						                  </div>
+						                </div>
+										<div
+											class="form-group #{error and 'name' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="name">Subject</label>
+											<input type="text" name="name" required="required" class="form-control" />
+										</div>
+										
+										<div
+											t-attf-class="form-group #{error and 'contact_name' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="contact_name">Contact Name</label>
+											<input type="text" name="contact_name" class="form-control" />
+										</div>
+										
+										<div
+											t-attf-class="form-group #{error and 'client_id' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="client_id">Client Name</label>
+											<t t-if="website.user_id == user_id">
+												<input type="text" name="client_id" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="text" name="client_id" class="form-control" t-att-value="user_id.partner_id.name"/>
+											</t>
+										</div>
+										<div
+											t-attf-class="form-group #{error and 'street' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="street">Street &amp; Address</label>
+											<t t-if="website.user_id == user_id">
+												<input type="text" name="street" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="text" name="street" class="form-control" t-att-value="user_id.partner_id.street"/>
+											</t>
+										</div>
+										<div
+											t-attf-class="form-group #{error and 'city' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="city">City</label>
+											<t t-if="website.user_id == user_id">
+												<input type="text" name="city" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="text" name="city" class="form-control" t-att-value="user_id.partner_id.city"/>
+											</t>
+										</div>
+										<div
+											t-attf-class="form-group #{error and 'contact_mobile' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="contact_mobile">Mobile</label>
+											<t t-if="website.user_id == user_id">
+												<input type="text" name="contact_mobile" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="text" name="contact_mobile" class="form-control" t-att-value="user_id.partner_id.mobile"/>
+											</t>
+										</div>
+										<div
+											t-attf-class="form-group #{error and 'phone' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="phone">Phone</label>
+											<t t-if="website.user_id == user_id">
+												<input type="phone" required="True" name="phone" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="phone" required="True" name="phone" class="form-control" t-att-value="user_id.partner_id.phone"/>
+											</t>
+										</div>
+										<div
+											t-attf-class="form-group #{error and 'email' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="email">Email</label>
+											<t t-if="website.user_id == user_id">
+												<input type="email" required="True" name="email" class="form-control" />
+											</t>
+											<t t-if="website.user_id != user_id">
+												<input type="email" required="True" name="email" class="form-control" t-att-value="user_id.partner_id.email"/>
+											</t>
+										</div>
+										
+										<div/>
+											<p><h1>Machine Details</h1></p>
+											<t t-if="request.params.get('repair_msg')">
+											  <div class='alert alert-warning' role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+												<span class="float-left">Invalid Serial No. !</span>
+											  </div>
+											</t>
+											<t t-if="request.params.get('product_msg')">
+											  <div class='alert alert-warning' role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+												<span class="float-left">Please Select Machine !</span>
+											  </div>
+											</t>
+											
+											<!--div
+											class="form-group #{error and 'machine' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="machine">Machine</label>
+											<input type="text" name="machine" required="required" class="form-control" />
+											</div-->
+											<div class="row">
+											<div
+												t-attf-class="form-group #{error and 'product_id' in error and 'has-error' or ''} col-lg-6">
+												<label class="control-label" for="product_id">Machine
+												</label>
+
+												<t t-set="product_list" t-value="website.get_product_list()" />
+												<select name="product_id" class="form-control" required="True">
+													<option value="">Choose a Machine...</option>
+													<t t-foreach="product_list" t-as="product">
+														<option t-att-value="product.id" t-att-selected="product.id == product_id">
+															<t t-esc="product.name" />
+														</option>
+													</t>
+												</select>
+											</div>
+											
+											<div
+											class="form-group #{error and 'serial' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="serial">Serial No</label>
+											<input type="text" name="serial" required="required" class="form-control" />
+											</div>
+											
+											<div
+											class="form-group #{error and 'machine_name' in error and 'has-error' or ''} col-lg-6">
+											<label class="control-label" for="machine_name">Machine Name</label>
+											<input type="text" name="machine_name" required="required" class="form-control" />
+											</div>
+											<div
+												t-attf-class="form-group #{error and 'under_guarantee' in error and 'has-error' or ''} col-lg-3">
+												<label class="control-label" for="under_guarantee">Under Guarantee?</label>
+												<select name="under_guarantee" class="under_guarantee form-control" required="True">
+													<option value=""></option>
+													<option value="yes">Yes</option>
+													<option value="no">No</option>
+												</select>
+											</div>
+											<div
+												t-attf-class="type_guarantee form-group #{error and 'type' in error and 'has-error' or ''} col-lg-3" style="display:none;">
+												<label class="control-label" for="type">Guarantee Type</label>
+												<select name="type" class="form-control">
+													<option value=""></option>
+													<option value="free">Free</option>
+													<option value="paid">Paid</option>
+												</select>
+											</div>
+										</div>
+
+										</div>
+										<div >
+											<!--a href="/shop" class="btn btn-default mb32">
+												<span class="fa fa-long-arrow-left" />
+												Back
+											</a-->
+											<a class="btn btn-default btn-primary pull-right mb32 a-submit">
+												Submit
+												<span class="fa fa-long-arrow-right" />
+											</a>
+										</div>
+										
+									</div>
+							</div>
+						</form>
+					</div>
+					
+				</div>
+			</t>
+		</template>
+
+
+		<!-- Machine Repair Thank You page -->
+
+		<template id="machine_thankyou" name="Machine Repair Thank You">
+			<t t-call="website.layout">
+				<div id="wrap">
+					<div class="oe_structure" />
+					<div class="container">
+						<h1>Thank you!</h1>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-success">
+									Thank you.
+									<button type="button" class="close" data-dismiss="alert">&amp;times;
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="oe_structure" />
+				</div>
+			</t>
+		</template>
+
+</odoo>

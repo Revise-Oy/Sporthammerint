@@ -1,0 +1,3 @@
+14.0.0.1 : 03-03-2021 : Fix Sequence Issue, Added missing fields & Button on Sale Order form, Fix traceback issue while clicking Billing menu.
+14.0.0.2 : 10-03-2021 : Fix traceback and warning issue while creating quotaion, diagnosis and saleorder from demo user.
+14.0.0.3 : 08-04-2021 : Added Done button on repair order and auto update price for service product on diagnosis line wizard.

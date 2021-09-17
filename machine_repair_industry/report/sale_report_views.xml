@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_order_pivot" model="ir.ui.view">
+			<field name="name">work.order.report.pivot</field>
+			<field name="model">workorder.report.analysis</field>
+			<field name="arch" type="xml">
+				<pivot string="Work Order Analysis" disable_linking="True">
+					<field name="date" type="row" />
+					<field name="name" type="col" />
+					<field name="price_subtotal" type="measure" />
+				</pivot>
+			</field>
+		</record>
+
+		<record id="view_order_graph" model="ir.ui.view">
+			<field name="name">work.order.report.graph</field>
+			<field name="model">workorder.report.analysis</field>
+			<field name="arch" type="xml">
+				<graph string="Work Order Analysis">
+					<field name="date" type="row" />
+					<field name="price_subtotal" type="measure" />
+				</graph>
+			</field>
+		</record>
+
+		<!-- Custom reports (aka filters) -->
+		<record id="filter_work_order_report_sales_funnel" model="ir.filters">
+			<field name="name">Work order Funnel</field>
+			<field name="model_id">workorder.report.analysis</field>
+			<field name="domain">['&amp;', ('date','&lt;=',
+				time.strftime('%%Y-12-31')), '&amp;',
+				('date','&gt;=',time.strftime('%%Y-01-01')), ('state','not
+				in',('cancel',))]
+			</field>
+			<field name="user_id" eval="False" />
+			<field name="context">{'group_by': ['state'], 'measures':
+				['price_subtotal']}
+			</field>
+		</record>
+
+		<record id="filter_work_order_report_salespersons" model="ir.filters">
+			<field name="name">By Salespersons</field>
+			<field name="model_id">workorder.report.analysis</field>
+			<field name="user_id" eval="False" />
+			<field name="context">{'group_by': ['date:month', 'user_id']}</field>
+		</record>
+		<record id="filter_workorder_report_salesteam" model="ir.filters">
+			<field name="name">By Salesteam</field>
+			<field name="model_id">workorder.report.analysis</field>
+			<field name="user_id" eval="False" />
+			<field name="context">{'group_by': ['date:month', 'team_id']}</field>
+		</record>
+		<record id="filter_isale_workorder_report_product" model="ir.filters">
+			<field name="name">By Product</field>
+			<field name="model_id">workorder.report.analysis</field>
+			<field name="user_id" eval="False" />
+			<field name="context">{'group_by': ['date:month', 'product_id']}</field>
+		</record>
+
+		<record id="view_work_order_search" model="ir.ui.view">
+			<field name="name">work.order.report.search</field>
+			<field name="model">workorder.report.analysis</field>
+			<field name="arch" type="xml">
+				<search string="Work Order Analysis">
+					<field name="date" />
+					<filter string="This Year" name="year" invisible="1"
+						domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" />
+					<filter name="Draft Workorder" string="Draft Workorder"
+						domain="[('state','in', ('draft',))]" />
+					<filter name="Inprogress Workorder" string="Inprogress Workorder"
+						domain="[('state','in',('startworking',))]" />
+					<filter name="Done Workorder" string="Done Workorder"
+						domain="[('state','in',('done',))]" />
+					<filter name="Pending Workorder" string="Pending Workorder"
+						domain="[('state','in',('pause',))]" />
+					<separator />
+					<field name="partner_id" />
+					<field name="product_id" />
+					<field name="user_id" />
+					<group expand="0" string="Extended Filters">
+						<field name="categ_id" filter_domain="[('categ_id', 'child_of', self)]" />
+					</group>
+					<group expand="1" string="Group By">
+						<filter string="Salesperson" name="User" context="{'group_by':'user_id'}" />
+						<filter string="Partner's Country" name="country_id"
+							context="{'group_by':'country_id'}" />
+						<filter string="Customer" name="Customer" context="{'group_by':'partner_id'}" />
+						<filter string="Product Category" name="Category"
+							context="{'group_by':'categ_id'}" />
+						<filter name="status" string="Status" context="{'group_by':'state'}" />
+						<separator />
+						<filter string="Order Month" name="month" context="{'group_by':'date:month'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="action_workorder_report_all" model="ir.actions.act_window">
+			<field name="name">Work Order Analysis</field>
+			<field name="res_model">workorder.report.analysis</field>
+			<field name="view_mode">pivot,graph</field>
+			<field name="view_id"></field>  <!-- force empty -->
+			<field name="search_view_id" ref="view_work_order_search" />
+			<!-- <field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[]}</field> -->
+			<field name="help">This report performs analysis on your work orders.
+			</field>
+		</record>
+
+
+
+
+
+		<menuitem name="Report" id="menu_report_workorder" parent="base.menu_base_machine_repair"
+			sequence="5"
+			groups="group_machine_repair_directeur_commercial,group_machine_repair_service_manager" />
+
+		<menuitem name="Workorder Report" action="action_workorder_report_all"
+			id="menu_report_workorder_all" parent="menu_report_workorder"
+			sequence="0" />
+
+		<!-- Inherit Sale Order Report -->
+		<template id="report_sale_order_inherit" inherit_id="sale.report_saleorder_document">
+			<xpath expr="//div[@class='page']/table[@class='table table-sm o_main_table']"
+				position="replace">
+				<table class="table table-sm o_main_table">
+					<thead>
+						<tr>
+							<t t-set="colspan" t-value="5"/>
+							<th>Machine</th>
+							<th>Model #</th>
+		                    <th class="text-left">Description</th>
+		                    <th class="text-right">Quantity</th>
+		                    <th class="text-right">Unit Price</th>
+		                    <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+		                        <span>Disc.(%)</span>
+		                        <t t-set="colspan" t-value="colspan+1"/>
+		                    </th>
+		                    <th class="text-right">Taxes</th>
+		                    <th class="text-right">
+		                        <t groups="account.group_show_line_subtotals_tax_excluded">Amount</t>
+		                        <t groups="account.group_show_line_subtotals_tax_included">Total Price</t>
+		                    </th>
+						</tr>
+					</thead>
+					<tbody class="sale_tbody">
+						<t t-set="current_subtotal" t-value="0"/>
+
+                    <t t-foreach="doc.order_line" t-as="line">
+
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                        <tr t-att-class="'bg-200 font-weight-bold' if line.display_type == 'line_section' else 'font-italic' if line.display_type == 'line_note' else ''">
+                            <t t-if="not line.display_type">
+                            	<td><span t-field="line.machine_name"/></td>
+                            	<td><span t-field="line.machine_model"/></td>
+                                <td><span t-field="line.name"/></td>
+                                <td class="text-right">
+                                    <span t-field="line.product_uom_qty"/>
+                                    <span t-field="line.product_uom" groups="uom.group_uom"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <span t-field="line.discount"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                </td>
+                            </t>
+                            <t t-if="line.display_type == 'line_section'">
+                                <td t-att-colspan="colspan">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <t t-set="current_section" t-value="line"/>
+                                <t t-set="current_subtotal" t-value="0"/>
+                            </t>
+                            <t t-if="line.display_type == 'line_note'">
+                                <td t-att-colspan="colspan">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+
+                        <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                            <tr class="is-subtotal text-right">
+                                <td t-att-colspan="colspan">
+                                    <strong class="mr16">Subtotal</strong>
+                                    <span
+                                        t-esc="current_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                                    />
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+					</tbody>
+				</table>
+			</xpath>
+		</template>
+
+        <!-- Inherit Account Invoice Reeport -->
+		<template id="report_account_invoice_inherit" inherit_id="account.report_invoice_document">
+			<xpath expr="//div[@class='page']/table[@name='invoice_line_table']"
+				position="replace">
+				<table class="table table-sm" name="invoice_line_table">
+					<thead>
+                            <tr>
+                                <t t-set="colspan" t-value="6"/>
+                               	<th>Machine</th>
+								<th>Model #</th>
+                                <th class="text-left"><span>Description</span></th>
+                                <th class="d-none text-left"><span>Source Document</span></th>
+                                <th class="text-right"><span>Quantity</span></th>
+                                <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Unit Price</span></th>
+                                <th t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                    <span>Disc.(%)</span>
+                                    <t t-set="colspan" t-value="colspan+1"/>
+                                </th>
+                                <th t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Taxes</span></th>
+                                <th class="text-right">
+                                    <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
+                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                </th>
+                            </tr>
+                        </thead>
+					<tbody class="invoice_tbody">
+						<t t-set="current_subtotal" t-value="0"/>
+
+                            <t t-foreach="o.invoice_line_ids" t-as="line">
+
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                                <tr t-att-class="'bg-200 font-weight-bold' if line.display_type == 'line_section' else 'font-italic' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                                    	<td>
+											<span t-field="line.machine_name" />
+										</td>
+										<td>
+											<span t-field="line.machine_model" />
+										</td>
+                                        <td name="account_invoice_line_name"><span t-field="line.name"/></td>
+                                       <!--  <td class="d-none"><span t-field="line.invoice_origin"/></td> -->
+                                        <td class="text-right">
+                                            <span t-field="line.quantity"/>
+                                            <span t-field="line.product_uom_id"  groups="uom.group_uom"/>
+                                        </td>
+                                        <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            <span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            <span t-field="line.discount"/>
+                                        </td>
+                                        <td t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                            <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))" id="line_tax_ids"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <td t-att-colspan="colspan">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                    </t>
+                                    <t t-if="line.display_type == 'line_note'">
+                                        <td t-att-colspan="colspan">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+
+                                <t t-if="current_section and (line_last or o.invoice_line_ids[line_index+1].display_type == 'line_section')">
+                                    <tr class="is-subtotal text-right">
+                                        <td t-att-colspan="colspan">
+                                            <strong class="mr16">Subtotal</strong>
+                                            <span
+                                                t-esc="current_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                            />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+					</tbody>
+				</table>
+			</xpath>
+		</template>
+
+	</data>
+</odoo>
