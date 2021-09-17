@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="paytrail_acquirer_button_e1">
+        <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me="" />
+        <!-- MERCHANT ID -->
+        <input type="hidden" name="MERCHANT_ID" t-att-value="paytrail_merchant_id" />
+        <!-- Order/Currency Information-->
+        <input type="hidden" name="ORDER_NUMBER" t-att-value="order_number" />
+        <input type="hidden" name="REFERENCE_NUMBER" value="" />
+        <input type="hidden" name="ORDER_DESCRIPTION" value="" />
+        <input type="hidden" name="CURRENCY" t-att-value="currency_code" />
+        <!-- Return Information-->
+        <input type="hidden" name="RETURN_ADDRESS" t-att-value="return_url" />
+        <input type="hidden" name="CANCEL_ADDRESS" t-att-value="cancel_url" />
+        <input type="hidden" name="PENDING_ADDRESS" value="" />
+        <input type="hidden" name="NOTIFY_ADDRESS" value="" />
+        <!-- Txn type, lang, mode Information-->
+        <input type="hidden" name="TYPE" t-att-value="version_type" />
+        <input type="hidden" name="CULTURE" t-att-value="culture_lang" />
+        <input type="hidden" name="PRESELECTED_METHOD" value="" />
+        <input type="hidden" name="MODE" t-att-value="mode" />
+        <input type="hidden" name="VISIBLE_METHODS" value="" />
+        <input type="hidden" name="GROUP" value="" />
+        <!-- Billing/Shipping Information-->
+        <input type="hidden" name="CONTACT_TELNO" t-att-value="contact_telno" />
+        <input type="hidden" name="CONTACT_CELLNO" t-att-value="contact_cellno" />
+        <input type="hidden" name="CONTACT_EMAIL" t-att-value="contact_email" />
+        <input type="hidden" name="CONTACT_FIRSTNAME" t-att-value="contact_fname" />
+        <input type="hidden" name="CONTACT_LASTNAME" t-att-value="contact_lname" />
+        <input name="CONTACT_COMPANY" type="hidden" value="" />
+        <input type="hidden" name="CONTACT_ADDR_STREET" t-att-value="contact_add" />
+        <input type="hidden" name="CONTACT_ADDR_ZIP" t-att-value="contact_zip" />
+        <input type="hidden" name="CONTACT_ADDR_CITY" t-att-value="contact_city" />
+        <input type="hidden" name="CONTACT_ADDR_COUNTRY" t-att-value="contact_country" />
+        <input type="hidden" name="INCLUDE_VAT" value="0" t-if="vat_cond" />
+        <input type="hidden" name="INCLUDE_VAT" value="1" t-if="vat_cond != True" />
+        <input type="hidden" name="ITEMS" t-att-value="items" />
+        <!-- Products Information-->
+        <input type="hidden" name="ITEM_TITLE[0]" t-att-value="item_title" />
+        <input type="hidden" name="ITEM_NO[0]" t-att-value="item_number" />
+        <input type="hidden" name="ITEM_AMOUNT[0]" t-att-value="item_amount" />
+        <input type="hidden" name="ITEM_PRICE[0]" t-att-value="item_price" />
+        <input type="hidden" name="ITEM_TAX[0]" t-att-value="item_tax" />
+        <input type="hidden" name="ITEM_DISCOUNT[0]" value="0" />
+        <input type="hidden" name="ITEM_TYPE[0]" t-att-value="item_type" />
+        <!-- AUTH Hash -->
+        <input type="hidden" name="AUTHCODE" t-att-value="authcode" />
+    </template>
+    <template id="paytrail_acquirer_button_e2">
+        <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me="" />
+        <input type="hidden" name="MERCHANT_ID" t-att-value="paytrail_merchant_id" />
+        <input type="hidden" name="URL_SUCCESS" t-att-value="return_url" />
+        <input type="hidden" name="URL_CANCEL" t-att-value="cancel_url" />
+        <input type="hidden" name="URL_NOTIFY" t-att-value="notify_url" />
+        <input type="hidden" name="ORDER_NUMBER" t-att-value="order_number" />
+        <input type="hidden" name="PARAMS_IN" t-att-value="PARAMS_IN" />
+        <input type="hidden" name="PARAMS_OUT" t-att-value="PARAMS_OUT" />
+        <input type="hidden" name="ITEM_TITLE[0]" t-att-value="order_number" />
+        <input type="hidden" name="ITEM_ID[0]" value="1" />
+        <input type="hidden" name="ITEM_QUANTITY[0]" value="1" />
+        <input type="hidden" name="ITEM_UNIT_PRICE[0]" t-att-value="item_price" />
+        <input type="hidden" name="ITEM_VAT_PERCENT[0]" value="0" />
+        <input type="hidden" name="ITEM_DISCOUNT_PERCENT[0]" value="0" />
+        <input type="hidden" name="ITEM_TYPE[0]" t-att-value="1" />
+        <input type="hidden" name="LOCALE" t-att-value="culture_lang" />
+        <input type="hidden" name="CURRENCY" t-att-value="currency_code" />
+        <input type="hidden" name="PAYER_PERSON_PHONE" t-att-value="contact_telno" />
+        <input type="hidden" name="PAYER_PERSON_EMAIL" t-att-value="contact_email" />
+        <input type="hidden" name="PAYER_PERSON_FIRSTNAME" t-att-value="contact_fname" />
+        <input type="hidden" name="PAYER_PERSON_LASTNAME" t-att-value="contact_lname" />
+        <input type="hidden" name="PAYER_COMPANY_NAME" t-att-value="company" />
+        <input type="hidden" name="PAYER_PERSON_ADDR_STREET" t-att-value="contact_add" />
+        <input type="hidden" name="PAYER_PERSON_ADDR_POSTAL_CODE" t-att-value="contact_zip" />
+        <input type="hidden" name="PAYER_PERSON_ADDR_TOWN" t-att-value="contact_city" />
+        <input type="hidden" name="PAYER_PERSON_ADDR_COUNTRY" t-att-value="contact_country" />
+        <input type="hidden" name="VAT_IS_INCLUDED" value="1" />
+        <input type="hidden" name="ALG" value="1" />
+        <input type="hidden" name="AUTHCODE" t-att-value="authcode" />
+    </template>
+</odoo>

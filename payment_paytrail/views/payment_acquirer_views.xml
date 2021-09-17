@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paytrail_acquirer_form" model="ir.ui.view">
+        <field name="name">acquirer.form.paytrail</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_form" />
+        <field name="arch" type="xml">
+            <xpath expr='//group[@name="acquirer"]' position='after'>
+                <group attrs="{'invisible': [('provider', '!=', 'paytrail')]}">
+                    <field name="paytrail_merchant_id" />
+                    <field name="paytrail_merchant_auth_hash" />
+                    <field name="paytrail_version_type" />
+                </group>
+                <p style="color:red;">
+                    **Supports only EUR currency
+                </p>
+            </xpath>
+        </field>
+    </record>
+    <record id="transaction_form_paytrail" model="ir.ui.view">
+        <field name="name">acquirer.transaction.form.paytrail</field>
+        <field name="model">payment.transaction</field>
+        <field name="inherit_id" ref="payment.transaction_form" />
+        <field name="arch" type="xml">
+            <xpath expr='//sheet/group[2]' position='after'>
+                <notebook>
+                    <page string="Paytrail TX Details">
+                        <group>
+                            <field name="paytrail_auth_hash" />
+                            <field name="paytrail_payment_method" />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
