@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_popup_wizard,access_popup_wizard,model_popup_wizard,base.group_user,1,0,0,0
+access_popup_wizard_fail,access_popup_wizard_fail,model_popup_wizard_fail,base.group_user,1,0,0,0 
+

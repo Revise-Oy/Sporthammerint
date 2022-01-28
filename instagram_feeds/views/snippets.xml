@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_structure']/div/t[@t-snippet='website.s_three_columns']" position="after">
+            <t t-snippet="instagram_feeds.s_follow_us" t-thumbnail="/instagram_feeds/static/src/img/instagram_feed.png"/>
+        </xpath>
+    </template>
+
+    <!--Assets file-->
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Assets">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/instagram_feeds/static/src/css/font-style.css"/>
+            <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"/>
+        </xpath>
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src='/instagram_feeds/static/src/js/masonry.pkgd.js'></script>
+            <script type="text/javascript" src='/instagram_feeds/static/src/js/insta_post.js'></script>
+        </xpath>
+    </template>
+    <template id="assets_editor" inherit_id="website.assets_editor" name="Website Assets">
+        <xpath expr="//script[last()]" position="after">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/velocity/1.4.1/velocity.min.js'></script>
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/velocity/1.4.1/velocity.ui.min.js'></script>
+        </xpath>
+    </template>
+
+    <template id="s_follow_us" name="Instagram Feeds">
+        <section class="section section-whitebg home-instagram" id="homepage">
+                <div class="container cms cms-plain clearfix">
+                    <H2 class="sec-tit text-center">Follow us on Instagram</H2>
+                    <div class="container py-5">
+                        <div id="instafeed" class="grid facebook-ui">
+                            <div class="grid-sizer"></div>
+                            <div class="gutter-sizer"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="page" id="page"/>
+                    <button id="loadmore" class="o_default_snippet_text btn mx-auto d-table px-5" >Load More</button>
+                  </div>
+            </section>
+
+    </template>
+</odoo>

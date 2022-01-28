@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'Gotham';
+    src: url('../fonts/GothamMedium.woff2') format('woff2'),
+        url('../fonts/GothamMedium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('../fonts/GothamBold.woff2') format('woff2'),
+        url('../fonts/GothamBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+  font-family: 'Pacifico';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Pacifico.woff2') format('woff2');
+}
+.home-facebook {
+    background: #f9f9f9;
+    font-style: normal;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+}
+.section-whitebg {
+    padding: 80px 0;
+    overflow: hidden;
+    clear: both;
+}
+.container {
+  padding-right:15px;
+  padding-left:15px;
+  margin-right:auto;
+  margin-left:auto;
+}
+.home-facebook .sec-tit {
+    font-family: 'Pacifico', cursive;
+    color: #3b5998;
+    font-size: 27px;
+    padding: 0 0 14px;
+    margin: 0;
+    position: relative;
+    text-align: center;
+    font-weight: normal;
+}
+.home-facebook .sec-tit:after {
+    width: 53px;
+    height: 4px;
+    background: #e0e0e0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    content: '';
+}

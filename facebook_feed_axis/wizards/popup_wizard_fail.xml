@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="popup_wizard_fail_view" model="ir.ui.view">
+        <field name="name">popup.wizard.fail.form</field>
+        <field name="model">popup.wizard.fail</field>
+         <field name="type">form</field>
+        <field name="arch" type="xml">
+        <form>
+            <label for="test_name" string="Test Connection Fail"/>
+            <field name="test_name"/>    
+            <footer>
+                  <button name="ok" string="Ok" class="btn-primary" special="cancel"/>
+            </footer>
+        </form>
+        </field>
+    </record>
+
+</data>
+</odoo>

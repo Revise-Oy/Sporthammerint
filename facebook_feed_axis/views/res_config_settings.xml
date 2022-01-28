@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_form_view" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.website</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="domain_setting" position="after">
+                <div class="col-xs-12 col-md-6 o_setting_box" id="domain_setting">
+                    <div class="o_setting_right_pane">
+                        <h2>Facebook Configurations</h2><br/>
+                        <div class="text-muted">
+                            URL to get your pageID:http://www.axistechnolabs.com/facebookpageid_generator
+                        </div>
+                        <div class="content-group">
+                            <div class="row">
+                                <label class="col-md-3 o_light_label" for="facebook_page_id" string="Page ID"/>
+                                <field name="facebook_page_id"/>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                            URL to get Token:https://developers.facebook.com/tools/explorer
+                        </div>
+                        <div class="content-group">
+                            <div class="row">
+                                <label class="col-md-3 o_light_label" for="facebook_access_token" string="Token"/>
+                                <field name="facebook_access_token"/>
+                            </div>
+                        </div>
+                        <div class="content-group">
+                            <div class="row">
+                                <label class="col-md-3 o_light_label" for="facebook_feed_limit" string="Feed Limit"/>
+                                <field name="facebook_feed_limit"/>
+                            </div>
+                        </div>   
+                        <div class="content-group">
+                            <div class="row">
+                                <label class="col-md-3 o_light_label" for="fb_background_selection" string="Dynamic Background Choice"/>
+                                <field name="fb_background_selection"/>
+                                <field name="fb_background_image"  attrs="{'invisible':[('fb_background_selection','!=', 'fb_background_image')], 'required': [('fb_background_selection', '=', 'fb_background_image')]}" class="background_image"/>
+                                <field name="fb_background_color" attrs="{'invisible':[('fb_background_selection','!=', 'fb_background_color')], 'required': [('fb_background_selection', '=', 'fb_background_color')]}" class="background_color"/>
+                            </div>
+                        </div>
+                        <div class="content-group" attrs="{'invisible':[('fb_background_selection','!=', 'fb_background_image')], 'required': [('fb_background_selection', '=', 'fb_background_image')]}">
+                            <div class="row">
+                                <label class="col-md-3 o_light_label" for="custom_css" string="Custom CSS"/>
+                                <field name="custom_css"/>
+                            </div>
+                        </div>
+                        <div>
+                        <button type="object" name="test_facebook_api_connection" class="btn btn-sm btn-link mt8 mb8">
+                            <span class="fa fa-fw o_button_icon fa-arrow-right"></span>
+                            <span>Test API Connection</span>
+                        </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

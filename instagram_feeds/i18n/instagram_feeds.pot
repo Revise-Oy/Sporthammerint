@@ -1,0 +1,123 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* instagram_feeds
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-21 09:57+0000\n"
+"PO-Revision-Date: 2019-11-21 09:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid ""
+"<span class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                                <span>Test API Connection</span>"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.s_follow_us
+msgid "<span class=\"oi\" data-glyph=\"check\"/>All Images Loaded!"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.s_follow_us
+msgid "<span class=\"oi\" data-glyph=\"reload\"/>Load More..."
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model,name:instagram_feeds.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: instagram_feeds
+#: code:addons/instagram_feeds/models/res_config_settings.py:0
+#, python-format
+msgid "Connection test failed."
+msgstr ""
+
+#. module: instagram_feeds
+#: code:addons/instagram_feeds/models/res_config_settings.py:0
+#, python-format
+msgid "Connection test success."
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.s_follow_us
+msgid "Follow us on Instagram"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid "Instagram Configurations"
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model.fields,field_description:instagram_feeds.field_res_config_settings__instagram_token
+#: model:ir.model.fields,field_description:instagram_feeds.field_website__instagram_token
+msgid "Instagram Token"
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model.fields,field_description:instagram_feeds.field_res_config_settings__instagram_user
+#: model:ir.model.fields,field_description:instagram_feeds.field_website__instagram_user
+msgid "Instagram UserID"
+msgstr ""
+
+#. module: instagram_feeds
+#: code:addons/instagram_feeds/models/res_config_settings.py:0
+#, python-format
+msgid "Please configure Token."
+msgstr ""
+
+#. module: instagram_feeds
+#: code:addons/instagram_feeds/models/res_config_settings.py:0
+#, python-format
+msgid "Please configure USERID."
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid "Token"
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model.fields,help:instagram_feeds.field_res_config_settings__instagram_token
+#: model:ir.model.fields,help:instagram_feeds.field_website__instagram_token
+msgid ""
+"Token for the instagram account         URL to get "
+"Token:http://instagram.pixelunion.net/"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid "URL to get Token:http://instagram.pixelunion.net/"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid "URL to get your UserID:https://thumbtube.com/instagram-user-id-finder"
+msgstr ""
+
+#. module: instagram_feeds
+#: model_terms:ir.ui.view,arch_db:instagram_feeds.res_config_settings_view_form_inherit
+msgid "User ID"
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model.fields,help:instagram_feeds.field_res_config_settings__instagram_user
+#: model:ir.model.fields,help:instagram_feeds.field_website__instagram_user
+msgid "User ID of the instagram account"
+msgstr ""
+
+#. module: instagram_feeds
+#: model:ir.model,name:instagram_feeds.model_website
+msgid "Website"
+msgstr ""

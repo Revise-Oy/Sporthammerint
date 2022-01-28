@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_follow_us" name="Facebook Posts">
+        <section class="section section-whitebg home-facebook" id="homepage">
+                <div class="container cms cms-plain clearfix">
+                    <H2 class="sec-tit">Follow us on Facebook</H2>  
+                    <div class="container py-5">
+                        <div id="facebookfeed" class="grid facebook-ui">
+                            <div class="grid-sizer"></div>
+                            <div class="gutter-sizer"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="page" id="page"/>
+                    <button id="loadmore" class="o_default_snippet_text btn mx-auto d-table px-5" style="display:none !important">Load More</button>
+                  </div>
+            </section>
+    </template>
+
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_structure']/div/t[@t-snippet='website.s_three_columns']" position="after">
+            <t t-snippet="facebook_feed_axis.s_follow_us" t-thumbnail="/facebook_feed_axis/static/src/img/icon.png"/>
+        </xpath>
+    </template>
+     <template id="assets_frontend1" inherit_id="website.assets_frontend" name="Website Assets">
+         <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/facebook_feed_axis/static/src/css/style.css"/>
+            <link rel="stylesheet" type="text/css" href="/facebook_feed_axis/static/src/scss/facebook.scss"/>
+            <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"/>
+        </xpath>
+        <xpath expr="//script[last()]" position="after">
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.js"></script> -->
+            <script type="text/javascript" src='/facebook_feed_axis/static/src/js/masonry.pkgd.js'></script>
+            <script src='https://npmcdn.com/isotope-layout@3.0.6/dist/isotope.pkgd.js'></script> 
+            <script type="text/javascript" src='/facebook_feed_axis/static/src/js/fb_post.js'></script>
+        </xpath>
+     </template>
+     <template id="assets_backend1" inherit_id="website.assets_backend" name="Website Assets">
+           <xpath expr="//link[last()]" position="after">
+                <link rel="stylesheet" type="text/css" href="/facebook_feed_axis/static/src/css/style.css"/>
+        </xpath>
+     </template>
+   
+</odoo>
