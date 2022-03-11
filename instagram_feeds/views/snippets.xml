@@ -37,8 +37,6 @@
                             <div class="gutter-sizer"></div>
                         </div>
                     </div>
-                    <input type="hidden" name="page" id="page"/>
-                    <button id="loadmore" class="o_default_snippet_text btn mx-auto d-table px-5" >Load More</button>
                   </div>
             </section>
 

@@ -4,5 +4,5 @@
 	branch = 14.0
 [submodule "sprintit/revise_addons_13"]
 	path = sprintit/revise_addons_13
-	url = git@bitbucket.org:sprintit/revise_addons_13.git
+	url = git@bitbucket.org:sprintit/revise_addons.git
 	branch = 14.0
