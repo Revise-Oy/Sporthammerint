@@ -195,6 +195,7 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 			let self = this; 
 			let current = self.env.pos.pos_session.id;
 			let pos_config = self.env.pos.config;
+			let today = self.get_current_day();
 
 			if (pos_config.pos_session_limit == 'all')
 			{
@@ -216,7 +217,7 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 					return [['state', 'in', ['draft','done','paid','invoiced','cancel']]]; 
 				}	
 			}
-			if (pos_config.pos_session_limit == 'last3')
+			else if (pos_config.pos_session_limit == 'last3')
 			{
 				if(pos_config.show_draft == true)
 				{
@@ -236,7 +237,7 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 					return [['session_id', 'in',[current,current-1,current-2,current-3]]]; 
 				}
 			}
-			if (pos_config.pos_session_limit == 'last5')
+			else if (pos_config.pos_session_limit == 'last5')
 			{
 				if(pos_config.show_draft == true)
 				{
@@ -257,7 +258,7 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 				}
 			}
 			
-			if (pos_config.pos_session_limit == 'current_session')
+			else if (pos_config.pos_session_limit == 'current_session')
 			{
 				if(pos_config.show_draft == true)
 				{
@@ -277,6 +278,32 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 					return [['session_id', 'in',[current]]]; 
 				}
 			}
+			else if (self.env.pos.config.pos_session_limit == 'current_day')
+			{
+				let today = self.get_current_day();
+				
+
+				if(pos_config.show_draft == true)
+				{
+					if(pos_config.show_posted == true)
+					{
+						return [['state', 'in', ['draft','done']],['date_order', '>=', today + ' 00:00:00'],['date_order', '<=', today + ' 23:59:59']]; 
+					}
+					else{
+						return [['state', 'in', ['draft']],['date_order', '>=', today + ' 00:00:00'],['date_order', '<=', today + ' 23:59:59']]; 
+					}
+				}
+				else if(pos_config.show_posted == true)
+				{
+					return [['state', 'in', ['done']],['date_order', '>=', today + ' 00:00:00'],['date_order', '<=', today + ' 23:59:59']];
+				}
+				else{
+					return [['date_order', '>=', today + ' 00:00:00'],['date_order', '<=', today + ' 23:59:59']]; 
+				}
+			}
+			else{
+				return [];
+			}
 		}
 
 		async get_pos_orders () {
@@ -291,19 +318,8 @@ odoo.define('pos_orders_all.POSOrdersScreen', function (require) {
 					method: 'search_read',
 					args: [pos_domain],
 				}).then(function(output) {
-					if (self.env.pos.config.pos_session_limit == 'current_day')
-					{
-						let today = self.get_current_day();
-						output.forEach(function(i) {
-							if(today == i.pos_order_date)
-							{
-								load_orders.push(i);
-							}
-						});
-					}
-					else{
-						load_orders = output;
-					}
+					load_orders = output;
+					
 					self.env.pos.db.get_orders_by_id = {};
 					self.env.pos.db.get_orders_by_barcode = {};
 					load_orders.forEach(function(order) {

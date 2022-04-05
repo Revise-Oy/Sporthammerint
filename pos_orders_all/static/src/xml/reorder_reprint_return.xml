@@ -96,8 +96,13 @@
 	<t t-name="OrderReprintReceipt" owl="1">
 		<div class="pos-receipt">
 			<img class="pos-receipt-logo" t-att-src='env.pos.company_logo_base64' alt="Logo"/>
+
 			<br/>
+			
 			<div class="pos-receipt-contact">
+				<t t-if='env.pos.company.name'>
+					<div><t t-esc="env.pos.company.name" /></div>
+				</t>
 				<t t-if='env.pos.company.contact_address'>
 					<div><t t-esc='env.pos.company.contact_address' /></div>
 				</t>
@@ -113,6 +118,10 @@
 				<t t-if='env.pos.company.website'>
 					<div><t t-esc='env.pos.company.website' /></div>
 				</t>
+				<t t-if="env.pos.config.receipt_header">
+                    <t t-raw="env.pos.config.receipt_header" />
+                </t>
+                
 				<br/>
 				
 				<t t-if='props.user_name'>
@@ -181,7 +190,24 @@
 				<span t-esc='env.pos.format_currency(props.tax)' class="pos-receipt-right-align"/>
 			</div>
 			<div class='before-footer' />
+			
+			<!-- Footer -->
+            <div t-if="env.pos.config.receipt_footer"  class="pos-receipt-center-align">
+                <t t-raw="env.pos.config.receipt_footer" />
+            </div>
 			<br/>
+
+			<div class="after-footer">
+                <t t-foreach="props.paymentlines" t-as="line">
+                    <t t-if="line.ticket">
+                        <br />
+                        <div class="pos-payment-terminal-receipt">
+                            <t t-raw="line.ticket" />
+                        </div>
+                    </t>
+                </t>
+            </div>
+
 			<div class="pos-receipt-order-data">
 				<div><t t-esc='props.order.pos_reference' /></div>
 				<div><t t-esc='props.order.date_order' /></div>

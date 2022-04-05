@@ -23,6 +23,11 @@ odoo.define('pos_all_in_one.ProductDetailsEdit', function(require) {'use strict'
 			this.props.resolve({ confirmed: false, payload: null });
 			this.trigger('close-popup');
 		}
+		
+		get imageUrl() {
+            const product = this.product;
+            return `/web/image?model=product.product&field=image_128&id=${product.id}&write_date=${product.write_date}&unique=1`;
+        }
 
 		captureChange(event) {
 			this.changes[event.target.name] = event.target.value;

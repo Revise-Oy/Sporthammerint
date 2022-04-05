@@ -49,7 +49,7 @@ odoo.define('pos_all_in_one.BiProductScreen', function(require) {
 					var prod_list = [];
 					prod_template.product_variant_ids.forEach(function (prod) {
 						prod_list.push(self.env.pos.db.get_product_by_id(prod));
-					});			
+					});
 					// this.product_template_list_widget.set_product_list(prod_list);
 					this.showPopup('ProductTemplatePopupWidget', {'variant_ids':prod_list});
 				} else {

@@ -57,13 +57,21 @@ class product(models.Model):
 	
 	available_quantity = fields.Float('Available Quantity')
 
+	
+	
+
+
 	def get_stock_location_avail_qty(self, location,products):
+
+		
 		res = {}
 		product_ids = self.env['product.product'].browse(products)
 		for product in product_ids:
 			quants = self.env['stock.quant'].search([('product_id', '=', product.id),('location_id', '=', location['id'])])
-			outgoing = self.env['stock.move'].search([('product_id', '=', product.id),('location_id', '=', location['id'])])
-			incoming = self.env['stock.move'].search([('product_id', '=', product.id),('location_dest_id', '=', location['id'])])
+			outgoing = self.env['stock.move'].search([('product_id', '=', product.id),
+				('location_id', '=', location['id']),('state', 'not in', ['done'])])
+			incoming = self.env['stock.move'].search([('product_id', '=', product.id),
+				('location_dest_id', '=', location['id']),('state', 'not in', ['done'])])
 			qty=0.0
 			product_qty = 0.0
 			incoming_qty = 0.0
@@ -73,41 +81,35 @@ class product(models.Model):
 
 				if len(outgoing) > 0:
 					for quant in outgoing:
-						if quant.state not in ['done']:
-							product_qty += quant.product_qty
+						product_qty += quant.product_qty
 
 				if len(incoming) > 0:
 					for quant in incoming:
-						if quant.state not in ['done']:
-							incoming_qty += quant.product_qty
+						incoming_qty += quant.product_qty
 					product.available_quantity = qty-product_qty + incoming_qty
 					res.update({product.id : qty-product_qty + incoming_qty})
 			else:
 				if not quants:
 					if len(outgoing) > 0:
 						for quant in outgoing:
-							if quant.state not in ['done']:
-								product_qty += quant.product_qty
+							product_qty += quant.product_qty
 
 					if len(incoming) > 0:
 						for quant in incoming:
-							if quant.state not in ['done']:
-								incoming_qty += quant.product_qty
+							incoming_qty += quant.product_qty
 					product.available_quantity = qty-product_qty + incoming_qty
 					res.update({product.id : qty-product_qty + incoming_qty})
 				else:
 					if len(outgoing) > 0:
 						for quant in outgoing:
-							if quant.state not in ['done']:
-								product_qty += quant.product_qty
+							product_qty += quant.product_qty
 
 					if len(incoming) > 0:
 						for quant in incoming:
-							if quant.state not in ['done']:
-								incoming_qty += quant.product_qty
+							incoming_qty += quant.product_qty
 					product.available_quantity = quants.quantity - product_qty + incoming_qty
 					res.update({product.id : quants.quantity - product_qty + incoming_qty})
-		return [res]
+		return [res,products]
 	
 
 class StockPicking(models.Model):

@@ -109,8 +109,8 @@
 								<h2><t t-esc='order["display_name"]'/></h2>
 							</div>
 							<div class="client-picture" style='float: right;margin-right: 40px;'>
-								<t t-if="order['image_1920']">
-									<img t-att-src="'data:image/png;base64,'+ order['image_1920']" alt="Product" style="width: 100px;height: 100px;"/>
+								<t t-if="imageUrl">
+									<img t-att-src="imageUrl" alt="Product" style="width: 100px;height: 100px;"/>
 								</t>
 								<t t-else="">
 									<i class="fa fa-camera no-img" role="img" aria-label="Picture" title="Picture"></i>
@@ -237,8 +237,8 @@
 					<main class="body" style="font-family: 'Lato-Reg';">
 						<div class='product-details-box clearfix'>
 							<div>
-								<t t-if="product.image_1920">
-									<img t-att-src="'data:image/png;base64,'+ product.image_1920" alt="Product" style="width: 100px;height: 100px;"/>
+								<t t-if="imageUrl">
+									<img t-att-src="imageUrl" alt="Product" style="width: 100px;height: 100px;"/>
 								</t>
 								<t t-else="">
 									<i class="fa fa-camera no-img" role="img" aria-label="Picture" title="Picture"></i>

@@ -16,6 +16,24 @@
 			</xpath>
 		</t>
 
+		<t t-name="outOfStock" owl="1">
+            <div role="dialog" class="modal-dialog">
+                <Draggable>
+                    <div class="popup popup-error">
+                        <header class="title drag-handle">
+                            <t t-esc="props.title" />
+                        </header>
+                        <main class="body traceback" style="font-size: 19px;text-align: left;"><t t-esc="props.body"/></main>
+                        <footer class="footer">
+                            <div class="button go_back_screen" t-on-click="go_back_screen">
+                                Confirm
+                            </div>
+                        </footer>
+                    </div>
+                </Draggable>
+            </div>
+        </t>
+
 		<t t-name="ProductItem" t-inherit="point_of_sale.ProductItem" t-inherit-mode="extension" owl="1">
 			<xpath expr="//div[hasclass('product-img')]" position="inside">
 				<t t-if="props.product.type != 'consu' and props.product.type != 'service'">
@@ -37,9 +55,9 @@
 						</t>
 						<t t-if="env.pos.config.pos_stock_type == 'available'">
 							<span class="price-tag" id="availqty" style="right: 90px;">
-								<t t-if="env.pos.config.show_stock_location == 'specific'">
-									<t t-esc="props.product.bi_available"/>
-								</t>
+								<!-- <t t-if="env.pos.config.show_stock_location == 'specific'">
+									<t t-esc="props.product.bi_available_specific"/>
+								</t> -->
 								<t t-if="env.pos.config.show_stock_location == 'all'">
 									<t t-esc="props.product.virtual_available"/>
 								</t>

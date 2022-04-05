@@ -60,6 +60,7 @@ odoo.define('pos_all_in_one.PayPOSOrdersScreen', function (require) {
 				let old_order = self.env.pos.get_order();
 				let order = event.detail;
 				let o_id = parseInt(event.detail.id);
+				let archive_product = false
 				let orderlines = [];
 				$.each(order.lines, function(index, value) {
 					let ol = self.env.pos.db.get_orderline_by_id[value];
@@ -82,36 +83,55 @@ odoo.define('pos_all_in_one.PayPOSOrdersScreen', function (require) {
 				}
 
 				orderlines.forEach(function(ol) {
-					let product = self.env.pos.db.get_product_by_id(ol.product_id[0]);
-					old_order.add_product(product, {
-						quantity: parseFloat(ol.qty),
-						price: ol.price_unit,
-						discount: ol.discount,
-					});
+					let product = false
+					product = self.env.pos.db.get_product_by_id(ol.product_id[0]);
+					if(product == undefined){
+						if(self.env.pos.config.archive_product_id){
+							product = self.env.pos.db.get_product_by_id(self.env.pos.config.archive_product_id[0])
+						}
+						else{
+							archive_product = true
+							return self.showPopup('ErrorPopup', {
+								title: self.env._t('Configure Product'),
+								body: self.env._t('Please set archive product.'),
+							});
+
+						}
+					}
+					if(archive_product == false){
+						old_order.add_product(product, {
+							quantity: parseFloat(ol.qty),
+							price: ol.price_unit,
+							discount: ol.discount,
+						});
+					}
+					
 				});
 
-				if(order.amount_due > 0 && order.amount_paid != 0)
-				{
-					let product_for_due = self.env.pos.config.partial_product_id;
-					if(product_for_due)
+				if (archive_product == false){
+					if(order.amount_due > 0 && order.amount_paid != 0)
 					{
-						let prd = self.env.pos.db.get_product_by_id(product_for_due[0]);
-						old_order.add_product(prd,{
-							quantity: 1.0,
-							price: -order.amount_paid,
-							discount: 0
-						});
+						let product_for_due = self.env.pos.config.partial_product_id;
+						if(product_for_due)
+						{
+							let prd = self.env.pos.db.get_product_by_id(product_for_due[0]);
+							old_order.add_product(prd,{
+								quantity: 1.0,
+								price: -order.amount_paid,
+								discount: 0
+							});
+						}
+						else{
+							return self.showPopup('ErrorPopup', {
+								title: self.env._t('Configure Product'),
+								body: self.env._t('Please configure partial product.'),
+							});
+						}
 					}
-					else{
-						return self.showPopup('ErrorPopup', {
-							title: self.env._t('Configure Product'),
-							body: self.env._t('Please configure partial product.'),
-						});
+					if(old_order.orderlines.length > 0){
+						self.trigger('close-temp-screen');
+						self.showScreen('PaymentScreen');			
 					}
-				}
-				if(old_order.orderlines.length > 0){
-					self.trigger('close-temp-screen');
-					self.showScreen('PaymentScreen');			
 				}
 			}
 

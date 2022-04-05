@@ -8,8 +8,7 @@ odoo.define('pos_all_in_one.loyalty_pos', function(require) {
 	models.load_models({
 		model: 'pos.loyalty.setting',
 		fields: ['name', 'product_id', 'issue_date', 'expiry_date', 'loyalty_basis_on', 'loyality_amount', 'active','redeem_ids'],
-		domain: function(self) 
-		{
+		domain: function(self) {
 			let today = new Date();
 			let dd = today.getDate();
 			let mm = today.getMonth()+1; //January is 0!
@@ -50,9 +49,9 @@ odoo.define('pos_all_in_one.loyalty_pos', function(require) {
 			this.loyalty = this.loyalty  || 0;
 			this.redeemed_points = this.redeemed_points || 0;
 			this.redeem_done = this.redeem_done || false;
-			setInterval(function(){ 
-				self.pos.load_new_partners();
-			}, 10000);
+			// setInterval(function(){ 
+			// 	self.pos.load_new_partners();
+			// }, 5000);
 		},
 
 		// remove_orderline: function(line) {

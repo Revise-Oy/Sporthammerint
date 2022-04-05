@@ -44,6 +44,7 @@
 				<xpath expr="//form/sheet/group" position="after">
 					<group>
 						<group string="Payment Notes">
+							<!-- <field name="available_partner_bank_ids" invisible="1"/> -->
 							<field name="notes_pos"/>
 						</group>
 					</group>

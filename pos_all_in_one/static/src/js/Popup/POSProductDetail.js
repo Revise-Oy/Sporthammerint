@@ -24,6 +24,11 @@ odoo.define('pos_all_in_one.POSProductDetail', function(require) {
 			this.trigger('close-popup');
 		}
 
+		get imageUrl() {
+            const product = this.order;
+            return `/web/image?model=product.product&field=image_128&id=${product.id}&write_date=${product.write_date}&unique=1`;
+        }
+
 		async uploadImage(event) {
 			const file = event.target.files[0];
 			if (!file.type.match(/image.*/)) {

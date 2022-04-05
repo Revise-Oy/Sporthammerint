@@ -25,6 +25,7 @@ odoo.define("pos_all_in_one.screens", function(require){
 	PosDB.include({
 		init: function(options){
 			this.product_template_by_id = {};
+			this.limit = 1500,
 			this.product_tmpl_id = []
 			this._super(options);
 		},
@@ -73,7 +74,7 @@ odoo.define("pos_all_in_one.screens", function(require){
 	                for(var j = 0; j < temp.length ; j++){
 	                    if(jQuery.inArray( prod.product_tmpl_id, product_tmpl_lst ) == -1){
 	                        if(prod.product_tmpl_id == temp[j].id){
-	                            var prd_list = temp[i].product_variant_ids.sort();
+//	                            var prd_list = temp[i].product_variant_ids.sort();
 	                            results.push(prod)
 	                            product_tmpl_lst.push(temp[j].id)
 	                        }

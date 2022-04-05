@@ -10,6 +10,7 @@
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/Screens/PayPOSOrdersScreen.js"></script>
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/Screens/CreateDraftPOS.js"></script>
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/Screens/PaymentScreen.js"></script>
+				
 
 				<!-- POS Product Template -->
 				<link rel="stylesheet" href="/pos_all_in_one/static/src/css/product.css" />
@@ -17,7 +18,7 @@
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/screens.js"/>
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/BiProductScreen.js"/>
 				<script type="text/javascript" src="/pos_all_in_one/static/src/js/ProductTemplatePopupWidget.js"/>
-
+				<script type="text/javascript" src="/pos_all_in_one/static/src/js/ReceiptScreen.js"></script>
 
 				<!-- pos product operation -->
 				<!-- <link rel="stylesheet" href="/pos_all_in_one/static/src/css/pos.css" /> -->

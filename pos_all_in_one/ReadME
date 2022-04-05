@@ -81,3 +81,44 @@ version 14.0.2.6
 Version 14.0.2.7 : (02-08-2021)	
 		-  allow to enter amount 0.00 and pay whole order later on.
 		-  Solved error while editing list price of variant product from the pos.
+
+Version 14.0.2.8 : (07-10-2021)
+		- if products are more than 10000 on the custom product screen. those are show error solved it.
+
+Version 14.0.2.9 : (11-11-2021)
+		-- Solve issue print product quanity for the variant product in the variant popup.
+
+Version 14.0.3.0 : (10-12-2021)
+		-- Solve installtation error.
+		-- fix and print stock value.
+
+
+Version 14.0.3.1 : (10-12-2021)
+		-- Now we can close partial paid order.
+
+date 21st Dec 2021
+version 14.0.3.2
+issue solve:-
+	installation error solve
+
+
+date 01/02/22
+version 14.0.3.3
+	-- Solved load client related issue
+    -- Solved issue of product load 
+    -- Update security files and solved the error.
+
+Version 14.0.3.4 : (03-02-2022)
+		- Solved multiple picking issue for partial order.
+
+Version 14.0.3.5 : (04-02-2022)
+		- Update code for qty update for partial payment
+
+Version 14.0.3.10 : (02-03-2022)
+		- update the code of installed module issue of client so check and solve.
+
+Version 14.0.3.11 : (03-03-2022)
+		- Display other currency in payment lines and also in receipt.
+
+Version 14.0.1.0 : (01-04-2022)
+		- For the unpaid order payment solved error.

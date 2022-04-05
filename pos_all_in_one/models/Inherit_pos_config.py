@@ -7,7 +7,8 @@ class PosConfigInherit(models.Model):
 	_inherit = 'pos.config'
 
 	internal_transfer = fields.Boolean('Internal Stock ')
-
+	archive_product_id = fields.Many2one("product.product",string="Archive Product", domain = [('type', '=', 'service'),('available_in_pos', '=', True)])
+	
 class PosOrderInherit(models.Model):
 	_inherit = 'pos.session'
 

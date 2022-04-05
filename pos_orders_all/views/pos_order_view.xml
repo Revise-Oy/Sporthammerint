@@ -17,7 +17,6 @@
 
 				<field name="pos_reference" position="after">
 					<field string="Barcode" name="barcode" readonly="1" />
-					<field name="pos_order_date" invisible="1"/>
 				</field>
 
 				<xpath expr="//form/sheet/notebook/page/field[@name='lines']//tree/field[@name='discount']" position="attributes">

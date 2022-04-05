@@ -54,7 +54,13 @@ odoo.define('pos_all_in_one.POSProductScreen', function (require) {
 			if (query && query !== '') {
 				return this.search_orders(this.orders,query);
 			} else {
-				return this.orders;
+				var list = [];
+		        if (this.orders) {
+		            for (var i = 0, len = Math.min(this.orders.length, 100); i < len; i++) {
+		                list.push(this.orders[i]);
+		            }
+		        }
+		        return list;
 			}
 		}
 
@@ -78,7 +84,7 @@ odoo.define('pos_all_in_one.POSProductScreen', function (require) {
 		}
 
 		get_orders_fields(){
-			var fields = ['name','display_name','default_code','barcode','image_1920','lst_price','standard_price',
+			var fields = ['name','display_name','default_code','barcode','lst_price','standard_price',
 				'categ_id','pos_categ_id','taxes_id','to_weight','uom_id','description_sale','tracking',
 				'description','product_tmpl_id','write_date','available_in_pos','attribute_line_ids'];
 			return fields;
@@ -87,13 +93,14 @@ odoo.define('pos_all_in_one.POSProductScreen', function (require) {
 		refresh_orders(){
 			var self = this;
 			var fields = this.get_orders_fields();
-
-			rpc.query({
+			var domain = ['available_in_pos','=',true]
+			self.rpc({
 					model: 'product.product',
 					method: 'search_read',
-					args: [null,fields],
-			}, {async: false,
+					args: [[domain],fields],
+			}, {
 				timeout: 3000,
+				limit:100,
 				shadow: true,}).then(function(output) {
 				let data = Object.keys(output).map(function(k) {
 					return output[k];

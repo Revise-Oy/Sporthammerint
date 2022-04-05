@@ -1,5 +1,4 @@
-// BiProductScreen js
-odoo.define('pos_orders_all.ReceiptScreen', function(require) {
+odoo.define('pos_all_in_one.ReceiptScreen', function(require) {
 	"use strict";
 
 	const Registries = require('point_of_sale.Registries');
@@ -9,7 +8,6 @@ odoo.define('pos_orders_all.ReceiptScreen', function(require) {
 		class extends ReceiptScreen {
 			constructor() {
 				super(...arguments);
-				this.update_prod_qty();
 			}
 
 			update_prod_qty(){
@@ -17,7 +15,7 @@ odoo.define('pos_orders_all.ReceiptScreen', function(require) {
 				const order = this.currentOrder;
 				let config = this.env.pos.config;
 				let stock_update = self.env.pos.company.point_of_sale_update_stock_quantities;
-				if (config.pos_display_stock === true && stock_update == 'real' && 
+				if (order.is_paying_partial == false && config.pos_display_stock === true && stock_update == 'real' && 
 					(config.pos_stock_type == 'onhand' || config.pos_stock_type == 'available')){
 					order.get_orderlines().forEach(function (line) {
 						var product = line.product;
@@ -30,17 +28,9 @@ odoo.define('pos_orders_all.ReceiptScreen', function(require) {
 				self.env.pos.set("is_sync",true);
 			}
 
-			load_product_qty(product){
-				let product_qty_final = $("[data-product-id='"+product.id+"'] #stockqty");
-				product_qty_final.html(product['bi_on_hand'])
-
-				let product_qty_avail = $("[data-product-id='"+product.id+"'] #availqty");
-				product_qty_avail.html(product['bi_available']);
-			}
 		};
 
 	Registries.Component.extend(ReceiptScreen, BiReceiptScreen);
-
 	return ReceiptScreen;
 
 });

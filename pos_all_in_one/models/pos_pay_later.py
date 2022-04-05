@@ -172,8 +172,8 @@ class PosOrderInherit(models.Model):
 				raise
 			except Exception as e:
 				_logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
-
-		pos_order._create_order_picking()
+		if pos_order.is_partial == False and is_paying_partial == False:
+			pos_order._create_order_picking()
 
 
 		create_invoice = False
@@ -262,6 +262,18 @@ class PosSessionInherit(models.Model):
 			('state', '=', 'draft'),('session_id.state', '=', 'closed')])
 		orders.write({'session_id': res.id})
 		return res
+
+	def action_pos_session_closing_control(self):
+		self._check_pos_session_balance()
+		for session in self:
+			orders = session.order_ids.filtered(lambda order: order.is_partial == False)
+			if any(order.state == 'draft' for order in orders):
+				raise UserError(_("You cannot close the POS when orders are still in draft"))
+			if session.state == 'closed':
+				raise UserError(_('This session is already closed.'))
+			session.write({'state': 'closing_control', 'stop_at': fields.Datetime.now()})
+			if not session.config_id.cash_control:
+				session.action_pos_session_close()
 
 	def _check_if_no_draft_orders(self):
 		draft_orders = self.order_ids.filtered(lambda order: order.state == 'draft')

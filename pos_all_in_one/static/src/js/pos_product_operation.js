@@ -2,7 +2,7 @@ odoo.define('pos_all_in_one.pos_prod_op', function (require) {
 	"use strict";
 
 	var models = require('point_of_sale.models');
-	models.load_fields('product.product', ['image_1920']);
+	// models.load_fields('product.product', ['image_1920']);
 
 	models.load_models({
 		model: 'pos.category',
