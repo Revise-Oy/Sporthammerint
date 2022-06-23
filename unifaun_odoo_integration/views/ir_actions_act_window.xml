@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="action_unifaun_pickup_location">
+            <field name="context">{}</field>
+            <field name="groups_id" eval="[(6, 0, [])]" />
+            <field name="limit">80</field>
+            <field name="name">Delivery Rates</field>
+            <field name="res_model">unifaun.pickup.location</field>
+            <field name="target">new</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" eval="False" />
+            <field name="view_ids" eval="[(6, 0, [])]" />
+            <field name="view_mode">form</field>
+        </record>
+    </data>
+</odoo>

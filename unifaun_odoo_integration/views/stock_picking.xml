@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="get_unifaun_checkout_location_form_view" model="ir.ui.view">
+            <field name="name">Get Unifaun Checkout Location</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <header>
+                    <button type="object" name="get_unifaun_pickup_location" string="Unifaun Pickup Location"
+                    attrs="{'invisible': [('delivery_type', '!=', 'unifaun')]}"/>
+                </header>
+                <xpath expr="//page[last()]" position="after">
+                    <page string="Unifaun Pickup Address" name="unifaun_pickup_address">
+                        <group>
+                            <field name="unifaun_pickup_address_ids" nolabel="1" options="{'no_open':True,'no_create':True}" readonly="1">
+                                <tree>
+                                    <field name="shipping_provider" />
+                                    <field name="carrier"/>
+                                    <field name="suboption_id" invisible="True"/>
+                                    <field name="price"/>
+                                    <field name="agent_name"/>
+                                    <field name="agent_address1"/>
+                                    <field name="agent_address2"/>
+                                    <field name="agent_city"/>
+                                    <field name="agent_zipCode"/>
+                                    <field name="agent_state"/>
+                                    <field name="agent_country"/>
+                                    <field name="agent_phone"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

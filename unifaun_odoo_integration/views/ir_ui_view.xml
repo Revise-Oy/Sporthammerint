@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="unifaun_pickup_location_view_form" model="ir.ui.view">
+            <field name="name">unifaun_pickup_location_view_form</field>
+            <field name="model">unifaun.pickup.location</field>
+            <field name="arch" type="xml">
+                <form string="Unifaun Pickup Location">
+                    <sheet>
+                        <group>
+                            <i>Available Agent</i>
+                        </group>
+                        <group>
+                            <field name="wizard_line_ids" nolabel="1" options="{'no_open':True,'no_create':True}" readonly="1">
+                                <tree>
+                                    <button type="object" name="set_receiver_address"  string="SELECT" class="btn btn-success"/>
+                                    <field name="shipping_provider" />
+                                    <field name="carrier"/>
+                                    <field name="suboption_id"/>
+                                    <field name="price"/>
+                                    <field name="agent_name"/>
+                                    <field name="agent_address1"/>
+                                    <field name="agent_address2"/>
+                                    <field name="agent_city"/>
+                                    <field name="agent_zipCode"/>
+                                    <field name="agent_state"/>
+                                    <field name="agent_country"/>
+                                    <field name="agent_phone"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <footer>
+                            <button class="oe_highlight o_onboard_button_white" special="cancel"
+                            string="Cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
