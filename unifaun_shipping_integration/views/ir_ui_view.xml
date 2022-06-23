@@ -26,6 +26,7 @@
                                     <field name="agent_state"/>
                                     <field name="agent_country"/>
                                     <field name="agent_phone"/>
+                                    <field name="agent_email" />
                                 </tree>
                             </field>
                         </group>

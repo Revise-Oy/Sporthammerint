@@ -19,19 +19,23 @@ def _prepare_api_url(carrier_id, prepare_id, service):
     if not host_name:
         raise ValidationError(_("Please define host name in {} company").format(carrier_id and carrier_id.company_id
                                                                                 and carrier_id.company_id.name))
+
+    if service == 'create_shipment':
+        return '%s/rs-extapi/v1/prepared-shipments/%s/shipments' % (host_name, prepare_id)
+    if service == 'shipment':
+        return '%s/rs-extapi/v1/shipments' % (host_name)
     if not checkout_id:
         raise ValidationError(_("Please define delivery checkout id in {}".format(carrier_id.name)))
     if service == 'get_checkout':
         return '%s/rs-extapi/v1/delivery-checkouts/%s' % (host_name, checkout_id)
     if service == 'prepare_shipment':
         return '%s/rs-extapi/v1/delivery-checkouts/%s' % (host_name, checkout_id)
-    if service == 'create_shipment':
-        return '%s/rs-extapi/v1/prepared-shipments/%s/shipments' %(host_name, prepare_id)
+
 
 
 class Unifaun():
     def send_request(prepare_id, data, carrier_id, methods, params, service):
-        api_url = _prepare_api_url(carrier_id=carrier_id,prepare_id=prepare_id, service=service)
+        api_url = _prepare_api_url(carrier_id=carrier_id, prepare_id=prepare_id, service=service)
         combine_id = carrier_id and carrier_id.company_id and carrier_id.company_id.unifaun_combine_id
         if not combine_id:
             raise ValidationError(_("Please define combine id in company"))
