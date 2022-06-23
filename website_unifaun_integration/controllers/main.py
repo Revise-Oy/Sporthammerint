@@ -1,6 +1,6 @@
 from odoo import fields, http, tools, _
 from odoo.http import request
-from odoo.addons.unifaun_odoo_integration.models.sale_order import SaleOrder
+from odoo.addons.unifaun_shipping_integration.models.sale_order import SaleOrder
 import requests
 import logging
 

@@ -3,7 +3,7 @@
     # App information
     'name': 'Odoo eCommerce Unifaun Integration',
     'category': 'Website',
-    'version': '14.0.03.12.2021',
+    'version': '14.0.23.06.2022',
     'summary': """""",
     'description': """ Unifaun Odoo Integration helps you integrate & manage your Unifaun account in odoo. manage your Delivery/shipping operations directly from odoo.provide the functionality of Get Rate,Export Orders,Generat Lable,Tracking. we also provide unifaun shipping integration,unifaun odoo integration,dhl express.""",
 
