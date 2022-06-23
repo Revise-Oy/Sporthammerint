@@ -9,13 +9,10 @@
 
                 <xpath expr="//page[@name='destination']" position='before'>
                     <page string="Unifaun" name="unifaun_configuration"
-                    attrs="{'invisible': [('delivery_type', '!=', 'unifaun')]}">
-                        <group attrs="{'required':[('delivery_type', '=', 'unifaun')]}">
+                    attrs="{'invisible': [('delivery_type', '!=', 'unifaun')], 'required':[('delivery_type', '!=', 'unifaun')]}">
+                        <group>
                             <group>
-                                <field name="company_id" />
-                                <field name="create_shipment_pl_flag"  widget="boolean_toggle"/>
-                                <field name="unifaun_checkout_id" attrs="{'invisible':[('create_shipment_pl_flag', '=', False)], 'required':[('create_shipment_pl_flag', '=', True)]}" />
-                                <field name="carrier_delivery_option_id" attrs="{'invisible':[('create_shipment_pl_flag', '=', False)], 'required':[('create_shipment_pl_flag', '=', True)]}" />
+                                <field name="unifaun_checkout_id" />
                                 <field name="carrier_customer_number" />
                                 <field name="carrier_partner_id" />
                                 <field name="carrier_service_id" />
