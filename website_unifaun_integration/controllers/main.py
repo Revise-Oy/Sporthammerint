@@ -25,8 +25,6 @@ class WebsiteSale(http.Controller):
             if order and order.carrier_id and not order.carrier_id.create_shipment_pl_flag:
                 existing_records = request.env['unifaun.pickup.address'].sudo().search([('sale_id', '=', order.id)])
                 existing_records.sudo().unlink()
-            if order.order_line.filtered(lambda x: x.product_id.categ_id.is_bicycle_category) and post.get('bicycle_category'):
-                return request.env['delivery.carrier'].search([('is_bicycle_category', '=', True)]).ids
         return results
 
     @http.route(['/get_location'], type='json', auth='public', methods=['POST'], website=True, csrf=False)

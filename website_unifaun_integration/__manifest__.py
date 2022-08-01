@@ -3,22 +3,27 @@
     # App information
     'name': 'Odoo eCommerce Unifaun Integration',
     'category': 'Website',
-    'version': '14.0.23.06.2022',
+    'version': '15.0.21.06.2022',
     'summary': """""",
-    'description': """ Unifaun Odoo Integration helps you integrate & manage your Unifaun account in odoo. manage your Delivery/shipping operations directly from odoo.provide the functionality of Get Rate,Export Orders,Generat Lable,Tracking. we also provide unifaun shipping integration,unifaun odoo integration,dhl express.""",
+    'description': """Unifaun Odoo Integration helps you integrate & manage your Unifaun account in odoo. manage your 
+    Delivery/shipping operations directly from odoo.provide the functionality of Get Rate,Export Orders,
+    Generat Lable,Tracking. we also provide unifaun shipping integration,unifaun odoo integration,dhl express.""",
 
     'depends': [
         'website_sale',
         'website_sale_delivery',
-        'unifaun_odoo_integration'
+        'unifaun_shipping_integration'
     ],
 
     'data': [
-        'data/ir_config_parameter_data.xml',
-        'templates/assests.xml',
-        'templates/template.xml',
+        'views/template.xml',
     ],
-
+    'assets': {
+        'web.assets_frontend': [
+            'website_unifaun_integration/static/src/css/unifaun_shipping.css',
+            'website_unifaun_integration/static/src/js/unifaun_shipping.js'
+        ],
+    },
     'author': 'Vraja Technologies',
     'maintainer': 'Vraja Technologies',
     'website': 'https://www.vrajatechnologies.com',
@@ -32,3 +37,6 @@
     'currency': 'EUR',
     'license': 'OPL-1',
 }
+
+# 15.0.21.06.2022
+# initial version of the app
