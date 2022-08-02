@@ -32,10 +32,25 @@
     border: 1px solid black;
     line-height: 30px;
     font-size: 14px;
+    /*display: flex;*/
+    overflow : hidden;
+    flex-wrap: wrap;
+    overflow-x: auto;
 }
 
 .screen .orders-screen {
-  max-width: 95%;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.clientlist-screen .top-content {
+    /*flex-grow: 1;
+    height:90%;*/
+    display: flex;
+    flex-wrap: wrap;
+    /*overflow : hidden;*/
+    overflow-x: auto;
 }
 
 .odoo-theme-button{

@@ -26,19 +26,7 @@ odoo.define('pos_orders_all.ReturnOrderButton', function(require) {
 					method: 'search_read',
 					args: [pos_domain],
 				}).then(function(output) {
-					if (self.env.pos.config.pos_session_limit == 'current_day')
-					{
-						let today = PosOrder.get_current_day();
-						output.forEach(function(i) {
-							if(today == i.pos_order_date)
-							{
-								load_orders.push(i);
-							}
-						});
-					}
-					else{
-						load_orders = output;
-					}
+					load_orders = output;
 					self.env.pos.db.get_orders_by_id = {};
 					self.env.pos.db.get_orders_by_barcode = {};
 					load_orders.forEach(function(order) {

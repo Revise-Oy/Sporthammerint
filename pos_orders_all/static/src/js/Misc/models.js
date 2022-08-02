@@ -6,6 +6,7 @@ odoo.define('pos_orders_all.models', function(require) {
 	var PosDB = require("point_of_sale.DB");
 	var utils = require('web.utils');
 	var round_pr = utils.round_precision;
+	var field_utils = require('web.field_utils');
 
 	PosDB.include({
 		init: function(options){
@@ -18,7 +19,7 @@ odoo.define('pos_orders_all.models', function(require) {
 
 	models.load_fields('res.company', ['point_of_sale_update_stock_quantities'])
 	models.load_fields('res.user', ['tz'])
-	models.load_fields('product.product', ['type','virtual_available',
+	models.load_fields('product.product', ['type','name','virtual_available',
 		'available_quantity','qty_available','incoming_qty','outgoing_qty',
 		'is_coupon_product']);
 
@@ -171,28 +172,25 @@ odoo.define('pos_orders_all.models', function(require) {
 		},
 
 		set_discount: function(discount){
-			if (this.pos.config.discount_type == 'percentage')
-			{
-				var disc = Math.min(Math.max(parseFloat(discount) || 0, 0),100);
+			var parsed_discount = isNaN(parseFloat(discount)) ? 0 : field_utils.parse.float('' + discount);
+
+			if (this.pos.config.discount_type == 'percentage'){
+				var disc = Math.min(Math.max(parsed_discount || 0, 0),100);
 			}
-			if (this.pos.config.discount_type == 'fixed')
-			{
-				var disc = discount;
+			if (this.pos.config.discount_type == 'fixed'){
+				var disc = parsed_discount;
 			}
 			this.discount = disc;
 			this.discountStr = '' + disc;
 			this.trigger('change',this);
 		},
-	
 
 		get_base_price:    function(){
 			var rounding = this.pos.currency.rounding;
-			if (this.pos.config.discount_type == 'percentage')
-			{
+			if (this.pos.config.discount_type == 'percentage'){
 				return round_pr(this.get_unit_price() * this.get_quantity() * (1 - this.get_discount()/100), rounding);
 			}
-			if (this.pos.config.discount_type == 'fixed')
-			{
+			if (this.pos.config.discount_type == 'fixed'){
 				return round_pr((this.get_unit_price()- this.get_discount())* this.get_quantity(), rounding);	
 			}
 		},
@@ -216,28 +214,28 @@ odoo.define('pos_orders_all.models', function(require) {
 			var product_taxes = [];
 
 			_(taxes_ids).each(function(el){
-	            var tax = _.detect(taxes, function(t){
-	                return t.id === el;
-	            });
+				var tax = _.detect(taxes, function(t){
+					return t.id === el;
+				});
 				product_taxes.push.apply(product_taxes, self._map_tax_fiscal_position(tax));
 			});
 			product_taxes = _.uniq(product_taxes, function(tax) { return tax.id; });
 
 			var all_taxes = this.compute_all(product_taxes, price_unit, this.get_quantity(), this.pos.currency.rounding);
 			var all_taxes_before_discount = this.compute_all(product_taxes, price_unit, this.get_quantity(), this.pos.currency.rounding);
-	        _(all_taxes.taxes).each(function(tax) {
-	            taxtotal += tax.amount;
-	            taxdetail[tax.id] = tax.amount;
-	        });
+			_(all_taxes.taxes).each(function(tax) {
+				taxtotal += tax.amount;
+				taxdetail[tax.id] = tax.amount;
+			});
 
-	        return {
-	            "priceWithTax": all_taxes.total_included,
-	            "priceWithoutTax": all_taxes.total_excluded,
-	            "priceSumTaxVoid": all_taxes.total_void,
-	            "priceWithTaxBeforeDiscount": all_taxes_before_discount.total_included,
-	            "tax": taxtotal,
-	            "taxDetails": taxdetail,
-	        };
+			return {
+				"priceWithTax": all_taxes.total_included,
+				"priceWithoutTax": all_taxes.total_excluded,
+				"priceSumTaxVoid": all_taxes.total_void,
+				"priceWithTaxBeforeDiscount": all_taxes_before_discount.total_included,
+				"tax": taxtotal,
+				"taxDetails": taxdetail,
+			};
 		},
 
 		get_display_price_one: function(){

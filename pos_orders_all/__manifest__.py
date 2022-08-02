@@ -3,7 +3,7 @@
 
 {
 	"name" : "All in One POS Features in Odoo",
-	"version" : "14.0.1.5",
+	"version" : "14.0.3.1",
 	"category" : "Point of Sale",
 	'summary': 'POS all in one features pos Reorder pos Reprint pos Coupon Discount pos Order Return POS Stock pos gift pos order all pos all features pos discount pos order list print pos receipt pos item count retail pos retail import sale from pos create quote from pos',
 	"description": """
@@ -215,6 +215,9 @@ odoo Create Sales Order from Point of Sale Create SO from POS Create sales from 
 		'static/src/xml/pos_stock.xml',
 		'static/src/xml/gift_coupon_voucher.xml',
 	],
+	'demo': [
+        'data/demo.xml',
+    ],
 	"auto_install": False,
 	"installable": True,
 	"images":['static/description/Banner.png'],

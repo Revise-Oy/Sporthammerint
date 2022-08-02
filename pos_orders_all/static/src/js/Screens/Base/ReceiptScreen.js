@@ -9,13 +9,16 @@ odoo.define('pos_orders_all.ReceiptScreen', function(require) {
 		class extends ReceiptScreen {
 			constructor() {
 				super(...arguments);
+				this.update_prod_qty();
+			}
+
+			update_prod_qty(){
 				let self = this;
 				const order = this.currentOrder;
 				let config = this.env.pos.config;
-				let stock_update = this.env.pos.company.point_of_sale_update_stock_quantities;
+				let stock_update = self.env.pos.company.point_of_sale_update_stock_quantities;
 				if (config.pos_display_stock === true && stock_update == 'real' && 
-					(config.pos_stock_type == 'onhand' || config.pos_stock_type == 'available'))
-				{
+					(config.pos_stock_type == 'onhand' || config.pos_stock_type == 'available')){
 					order.get_orderlines().forEach(function (line) {
 						var product = line.product;
 						product['bi_on_hand'] -= line.get_quantity();
@@ -24,7 +27,7 @@ odoo.define('pos_orders_all.ReceiptScreen', function(require) {
 						self.load_product_qty(product);
 					}) 
 				}
-				this.env.pos.set("is_sync",true);
+				self.env.pos.set("is_sync",true);
 			}
 
 			load_product_qty(product){

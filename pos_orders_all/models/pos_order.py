@@ -16,18 +16,12 @@ class PosOrderLineInherit(models.Model):
 class pos_order(models.Model):
 	_inherit = 'pos.order'
 
-	pos_order_date = fields.Date('Oder Date', compute='get_order_date')
 	barcode = fields.Char(string="Order Barcode")
 	barcode_img = fields.Binary('Order Barcode Image')
 	return_order_ref = fields.Many2one('pos.order',string="Return Order Ref")
 	location_id = fields.Many2one(
 		comodel_name='stock.location',related='config_id.stock_location_id',
 		string="Location", store=True,readonly=True)
-
-	
-	def get_order_date(self):
-		for order in self:
-			order.pos_order_date = order.date_order.date()
 
 	@api.model
 	def _order_fields(self, ui_order):
@@ -39,6 +33,9 @@ class pos_order(models.Model):
 		if 'return_order_ref' in ui_order:
 			if ui_order.get('return_order_ref') != False:
 				res['return_order_ref'] = int(ui_order['return_order_ref'])
+
+				return_order = self.search([('id','=',res['return_order_ref'])])
+				res['name'] = return_order.name + _(' REFUND')
 				po_line_obj = self.env['pos.order.line']
 				for l in ui_order['lines']:
 					line = po_line_obj.browse(int(l[2]['original_line_id']))

@@ -18,6 +18,12 @@ odoo.define('pos_orders_all.ReturnOrderPopup', function(require) {
 			let selectedOrder = self.env.pos.get_order();
 			let orderlines = self.props.orderlines;
 			let order = self.props.order;
+			if (selectedOrder.return_order_ref){
+				if (selectedOrder.return_order_ref != order.id){
+					alert("Cannot Return More Than One Order");
+					return;
+				}
+			}
 			let partner_id = false
 			let client = false
 			if (order && order.partner_id != null){
@@ -38,6 +44,9 @@ odoo.define('pos_orders_all.ReturnOrderPopup', function(require) {
 				exact_return_qty = qty_id;
 				exact_entered_qty = entered_qty || 0;
 				let remained = qty_id - returned_qty;
+
+				let set_discount = false
+
 
 				if(remained < entered_qty){
 					alert("Cannot Return More quantity than purchased");
@@ -60,17 +69,39 @@ odoo.define('pos_orders_all.ReturnOrderPopup', function(require) {
 			let invalid_prod = false;
 			$.each( return_products, function( key, value ) {
 				orderlines.forEach(function(ol) {
+					
 					if(ol.id == key && value > 0){
 						let product = self.env.pos.db.get_product_by_id(ol.product_id[0]);
 
 						if(product){
-							selectedOrder.add_product(product, {
-								quantity: - parseFloat(value),
-								price: ol.price_unit,
-								discount: ol.discount,
-							});
-							selectedOrder.set_return_order_ref(ol.order_id[0]);
-							selectedOrder.selected_orderline.set_original_line_id(ol.id);
+							if (selectedOrder.get_orderlines().length == 0){
+								selectedOrder.add_product(product, {
+									quantity: - parseFloat(value),
+									price: ol.price_unit,
+									discount: -(ol.discount/exact_return_qty) * parseFloat(value),
+								});
+								selectedOrder.set_return_order_ref(ol.order_id[0]);
+								selectedOrder.selected_orderline.set_original_line_id(ol.id);		
+							}
+							else{
+
+								var line = selectedOrder.get_orderlines().filter(function(item) {
+                                    return item.product.id == product.id;
+                                });
+
+								
+								if((-line[0].quantity) + parseFloat(value) > exact_return_qty){
+									alert("Cannot Return More quantity than purchased");
+									return;
+								}else{
+									selectedOrder.add_product(product, {
+										quantity: - parseFloat(value),
+										price: ol.price_unit,
+										discount: -(ol.discount/exact_return_qty) * parseFloat(value),
+									});
+									selectedOrder.selected_orderline.set_original_line_id(ol.id);
+								}
+							}
 						}else{
 							invalid_prod = true;
 							alert("Please configure Product:( "+ol.product_id[1]+" ) for POS.")

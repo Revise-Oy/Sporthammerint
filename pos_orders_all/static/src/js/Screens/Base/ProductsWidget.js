@@ -43,9 +43,13 @@ odoo.define('pos_orders_all.ProductsWidget', function(require) {
 					$.each(prods, function( i, prd ){
 						prod_ids.push(prd.id)
 					});
+					
 					let x_sync = self.env.pos.get("is_sync")
+					if(x_sync == false){
+						x_sync = true
+					}
 					let location = self.env.pos.locations;
-					if(x_sync == true){
+					if(x_sync == true ){
 						if (self.env.pos.config.pos_stock_type == 'onhand'){
 							this.rpc({
 								model: 'stock.quant',
@@ -56,13 +60,12 @@ odoo.define('pos_orders_all.ProductsWidget', function(require) {
 								$.each(prods, function( i, prd ){
 									prd['bi_on_hand'] = prd.qty_available;
 									prd['bi_available'] = prd.virtual_available;
-									for(let key in self.env.pos.loc_onhand){
-										if(prd.id == key){
-											prd['bi_on_hand'] = self.env.pos.loc_onhand[key];
-											var product_qty_final = $("[data-product-id='"+prd.id+"'] #stockqty");
-											product_qty_final.text();
-											product_qty_final.text(self.env.pos.loc_onhand[key]);
-										}
+									if(prd.id == self.env.pos.loc_available){
+										prd['bi_on_hand'] = self.env.pos.loc_onhand[key];
+										prd['updated_price'] = self.env.pos.loc_onhand[key];
+									}else{
+									    prd['bi_on_hand'] = 0
+										prd['updated_price'] = 0
 									}
 								});
 								self.env.pos.set("is_sync",false);
@@ -76,19 +79,14 @@ odoo.define('pos_orders_all.ProductsWidget', function(require) {
 								args: [1, location,prod_ids],
 							}).then(function(output) {
 								self.env.pos.loc_available = output[0];
-
 								$.each(prods, function( i, prd ){
 									prd['bi_on_hand'] = prd.qty_available;
 									prd['bi_available'] = prd.virtual_available;
-									for(let key in self.env.pos.loc_available){
-										if(prd.id == key)
-										{
-											prd['bi_available'] = self.env.pos.loc_available[key];
-											
-											var product_qty_avail = $("[data-product-id='"+prd.id+"'] #availqty");
-											product_qty_avail.text();
-											product_qty_avail.text(self.env.pos.loc_available[key]);
-										}
+									if(prd.id in self.env.pos.loc_available){
+										prd['bi_available_specific'] = self.env.pos.loc_available[prd.id];
+										var product_qty_avail = $("[data-product-id='"+prd.id+"'] #availqty");
+										product_qty_avail.text();
+										product_qty_avail.text(self.env.pos.loc_available[prd.id]);
 									}
 								});
 								self.env.pos.set("is_sync",false);

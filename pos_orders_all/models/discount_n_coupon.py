@@ -115,8 +115,7 @@ class PosOrder(models.Model):
 				raise
 			except Exception as e:
 				_logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
-
-		pos_order._create_order_picking()
+			pos_order._create_order_picking()
 
 		create_invoice = False
 		if pos_order.to_invoice and pos_order.state == 'paid':
@@ -144,20 +143,21 @@ class PosOrderLine(models.Model):
 	discount_line_type = fields.Char(string='Discount Type',readonly=True)
 
 	def _compute_amount_line_all(self):
-		self.ensure_one()
-		fpos = self.order_id.fiscal_position_id
-		tax_ids_after_fiscal_position = fpos.map_tax(self.tax_ids, self.product_id, self.order_id.partner_id) if fpos else self.tax_ids
-		
-		if self.discount_line_type == "Fixed":
-			price = self.price_unit - self.discount
-		else:
-			price = self.price_unit * (1 - (self.discount or 0.0) / 100.0)
+		for line in self:
+			fpos = line.order_id.fiscal_position_id
+			tax_ids_after_fiscal_position = fpos.map_tax(line.tax_ids, line.product_id, line.order_id.partner_id) if fpos else line.tax_ids
+			
+			if line.discount_line_type == "Fixed":
+				price = line.price_unit - line.discount
 
-		taxes = tax_ids_after_fiscal_position.compute_all(price, self.order_id.pricelist_id.currency_id, self.qty, product=self.product_id, partner=self.order_id.partner_id)
-		return {
+			else:
+				price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+			taxes = tax_ids_after_fiscal_position.compute_all(price, line.order_id.pricelist_id.currency_id, line.qty, product=line.product_id, partner=line.order_id.partner_id)
+
+			line.update({
 			'price_subtotal_incl': taxes['total_included'],
 			'price_subtotal': taxes['total_excluded'],
-		}
+			})
 
 
 class PosSession(models.Model):
@@ -179,9 +179,11 @@ class PosSession(models.Model):
 		tax_ids = order_line.tax_ids_after_fiscal_position\
 					.filtered(lambda t: t.company_id.id == order_line.order_id.company_id.id)
 		sign = -1 if order_line.qty >= 0 else 1
-		price = sign * order_line.price_unit * (1 - (order_line.discount or 0.0) / 100.0)
 		if order_line.discount_line_type != 'Percentage':
+			price = sign * (order_line.price_unit - order_line.discount)
+		else:
 			price = sign * order_line.price_unit * (1 - (order_line.discount or 0.0) / 100.0)
+
 		
 		# The 'is_refund' parameter is used to compute the tax tags. Ultimately, the tags are part
 		# of the key used for summing taxes. Since the POS UI doesn't support the tags, inconsistencies

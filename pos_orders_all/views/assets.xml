@@ -18,6 +18,9 @@
 				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/SODetail.js"></script>
 				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/ImportSaleOrder.js"></script>
 				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/PosBagPopup.js"></script>
+				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/outOfStock.js"></script>
+
+				
 					<!-- - - - - Coupon - - - - -->
 				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/GiftCoupon/AfterCreateCouponPopup.js"></script>
 				<script type="text/javascript" src="/pos_orders_all/static/src/js/Popups/GiftCoupon/CouponConfigPopup.js"></script>

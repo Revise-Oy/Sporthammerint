@@ -60,9 +60,63 @@ Version 14.0.1.2 : (06/05/21)
 Version 14.0.1.3 : (12/05/21)
 		- Update method get_sale_details().
 
-
 Version 14.0.1.4 : (06/07/21)
 		-`solve the issue in spanish language.
 
 Version 14.0.1.5 : (28/05/21)
 		- Solved product stock display issue at the time of search.
+
+Version 14.0.1.6 : (17/09/21)
+		- Create demo gift coupon product.
+		- Add context for product creation from coupon .
+
+Version 14.0.1.7 : (11/11/21)
+		-- Show Out OF Stock warning base on product name.
+
+Version 14.0.1.8 : (19/11/21)
+		- Solved issue of set_discount().
+
+Version 14.0.1.9 : (22/11/21)
+		- Solved issue of fix discount with amount greater than 100.
+
+Version 14.0.2.0 : (10/12/21)
+		- Solved Stock load time issue.
+		- Fix LOading time issue for the load cussrent day orders in pos.
+
+Version 14.0.2.1 : (14/12/21)
+		- While returing order from pos now change name of the return order same as base refund.
+
+Version 14.0.2.2 : (27/12/21)
+		- Change Code for the calculate discount with fixed price.
+
+Version 14.0.2.3 : (05/01/22)
+		- Change Code for re-print receipt added code for the header and footer.
+
+
+Version 14.0.2.4 : (28/01/22)
+		-- Update code for the discount when discount type is not Percentage.
+
+
+Version 14.0.2.5 : (04/02/22)
+		- Update code for qty display on product.
+
+version : 14.0.2.6 : (02/03/22)
+		- in oprator issue of location base solve.
+
+version : 14.0.2.7 : (17/03/22)
+		- in Confarigration select the location and in Productscreen varient product show the
+		  another location quantity out of stock popup but multiple time show the product name , so issue
+		  solve for single time show the pop up body msg show for out of tock for wh location.
+
+version : 14.0.2.8 : (15/04/22)
+		-- Solved userError related issue.
+
+version : 14.0.2.9 : (09/06/22)
+	-- When we return order from the pos that time it will allow more than one order and more than purchased product fixed that issue, also fixed for the discounted order.
+
+version : 14.0.3.0 : (14/06/22)
+	-- for the other user if there is no access given of inventory that time when we open pos that time get an error fixed that issue.
+	-- for the multiple order if we used all qty in first order then it will allowed for the second order fixed that issue.
+
+version : 14.0.3.1 : (14/07/22)
+	-- Chnage xpath for the inherit view of report_invoice_document
