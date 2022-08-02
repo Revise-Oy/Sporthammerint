@@ -206,7 +206,7 @@
 		</template>
 
         <!-- Inherit Account Invoice Reeport -->
-		<template id="report_account_invoice_inherit" inherit_id="account.report_invoice_document">
+		<!-- <template id="report_account_invoice_inherit" inherit_id="account.report_invoice_document">
 			<xpath expr="//div[@class='page']/table[@name='invoice_line_table']"
 				position="replace">
 				<table class="table table-sm" name="invoice_line_table">
@@ -247,7 +247,7 @@
 											<span t-field="line.machine_model" />
 										</td>
                                         <td name="account_invoice_line_name"><span t-field="line.name"/></td>
-                                       <!--  <td class="d-none"><span t-field="line.invoice_origin"/></td> -->
+                                        <td class="d-none"><span t-field="line.invoice_origin"/></td>
                                         <td class="text-right">
                                             <span t-field="line.quantity"/>
                                             <span t-field="line.product_uom_id"  groups="uom.group_uom"/>
@@ -295,7 +295,7 @@
 					</tbody>
 				</table>
 			</xpath>
-		</template>
+		</template> -->
 
 	</data>
 </odoo>
