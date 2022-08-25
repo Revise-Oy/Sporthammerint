@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="unifaun_credential_configuration" model="ir.ui.view">
+        <field name="name">Unifaun Credential Configuration</field>
+        <field name="model">res.company</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position="after">
+                <page string="Unifaun Configuration">
+                    <group>
+                        <field name="use_unifaun_integration"/>
+                    </group>
+                    <group attrs="{'invisible': [('use_unifaun_integration', '!=', True)]}">
+                        <group>
+                            <field name="unifaun_api_url"
+                               attrs="{'required':[('use_unifaun_integration','=',True)]}"/>
+                             <field name="unifaun_combine_id"
+                               attrs="{'required':[('use_unifaun_integration','=',True)]}" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
