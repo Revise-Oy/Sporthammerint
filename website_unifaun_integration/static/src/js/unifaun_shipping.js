@@ -28,9 +28,9 @@ odoo.define('website_unifaun_integration.checkout', function (require) {
             // Workaround to:
             // - update the amount/error on the label at first rendering
             // - prevent clicking on 'Pay Now' if the shipper rating fails
-            if ($carriers.length > 0) {
-                $carriers.filter(':checked').click();
-            }
+//            if ($carriers.length > 0) {
+//                $carriers.filter(':checked').click();
+//            }
             //while load delete Unifaun Pickup Location if it is already created
             var order_id = $('#sale_order_js').val();
             var delivery_id = $("#delivery_carrier input[name='delivery_type']").filter(':checked').val();
@@ -41,29 +41,19 @@ odoo.define('website_unifaun_integration.checkout', function (require) {
                     route: '/unifaun_service',
                     params: {
                         'order': order_id,
-                        'delivery_type':delivery_id
+                        'delivery_type':delivery_id,
+                        'bicycle_category':'check'
                     },
+                }).then(function (result) {
+                if (result){
+                    $($('#delivery_carrier input[name="delivery_type"]')).each(function(index, value) {
+                    if (jQuery.inArray(parseInt($(value).attr('value')), result) < 0){
+                        $(value).parent().hide();
+                        };
+                    });
+                }
+
                 });
-            }
-            if ($("input[name='delivery_type']").length){
-                var pid = [];
-            $($("table[id='cart_products']").children('tbody').find('tr')).each(function(index, value) {
-                pid.push(parseInt($(value).children('td').children("span[data-oe-model='product.product']").attr('data-oe-id')));
-            });
-//            self._rpc({
-//                model: 'product.product',
-//                method: 'check_bicycle_category',
-//                args: [pid]
-//            }).then(function (result) {
-//                if (result){
-//                    $($('#delivery_carrier input[name="delivery_type"]')).each(function(index, value) {
-//                    if (jQuery.inArray(parseInt($(value).attr('value')), result) < 0){
-//                        $(value).parent().hide();
-//                        };
-//                    });
-//                }
-//
-//                });
             }
 
             //Asynchronously retrieve every carrier price
@@ -108,11 +98,7 @@ odoo.define('website_unifaun_integration.checkout', function (require) {
                 $amountUntaxed.html(result.new_amount_untaxed);
                 $amountTax.html(result.new_amount_tax);
                 $amountTotal.html(result.new_amount_total);
-//                $payButton.data('disabled_reasons').carrier_selection = false;
-                var disabledReasons = $payButton.data('disabled_reasons') || {};
-                disabledReasons.carrier_selection = false;
-
-
+                $payButton.data('disabled_reasons').carrier_selection = false;
                 $payButton.prop('disabled', _.contains($payButton.data('disabled_reasons'), true));
             } else {
                 $amountDelivery.html(result.new_amount_delivery);
@@ -158,10 +144,8 @@ odoo.define('website_unifaun_integration.checkout', function (require) {
             $radio.prop("checked", true);
             var $payButton = $('#o_payment_form_pay');
             $payButton.prop('disabled', true);
-//            $payButton.data('disabled_reasons', $payButton.data('disabled_reasons') || {});
-//            $payButton.data('disabled_reasons').carrier_selection = true;
-            var disabledReasons = $payButton.data('disabled_reasons') || {};
-            disabledReasons.carrier_selection = true;
+            $payButton.data('disabled_reasons', $payButton.data('disabled_reasons') || {});
+            $payButton.data('disabled_reasons').carrier_selection = true;
             dp.add(this._rpc({
                 route: '/shop/update_carrier',
                 params: {
